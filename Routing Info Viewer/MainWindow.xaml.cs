@@ -45,12 +45,12 @@ namespace Routing_Info_Viewer
 
         private void buttonGetRoute_Click_old(object sender, RoutedEventArgs e)
         {
-            List<ClassOneRoute> sortedPossibleRoutes = new List<ClassOneRoute>();
-            List<ClassOneRoute> allPossibleRoutes = new List<ClassOneRoute>();
+            List<ClassOnePossibleRoute> sortedPossibleRoutes = new List<ClassOnePossibleRoute>();
+            List<ClassOnePossibleRoute> allPossibleRoutes = new List<ClassOnePossibleRoute>();
             var starts = listRouteMileage.Where(x => x.站名.Equals(textBoxFrom.Text));
             foreach (var start in starts)
             {
-                ClassOneRoute copr = new ClassOneRoute();
+                ClassOnePossibleRoute copr = new ClassOnePossibleRoute();
                 copr.AddBack(start);
                 sortedPossibleRoutes.Add(copr);
             }
@@ -61,7 +61,7 @@ namespace Routing_Info_Viewer
 
             while (sortedPossibleRoutes.Count > 0)
             {
-                ClassOneRoute copr = sortedPossibleRoutes.First();
+                ClassOnePossibleRoute copr = sortedPossibleRoutes.First();
                 sortedPossibleRoutes.RemoveAt(0);
 
                 lastStation = copr.Stations.Last();
@@ -80,7 +80,7 @@ namespace Routing_Info_Viewer
                 }
 
                 // if the length reaches max, ignore it!
-                if (copr.Length > 5000 || copr.PassedRoutes > 5) { continue; }
+                if (copr.Length > 5000 || copr.PassedRouteNum > 5) { continue; }
                 // else, add all the other station in the same line
                 // or in the same station.
 
@@ -126,15 +126,15 @@ namespace Routing_Info_Viewer
                 {
                     //try
                     //{
-                    ClassOneRoute newCopr = new ClassOneRoute(copr);
+                    ClassOnePossibleRoute newCopr = new ClassOnePossibleRoute(copr);
                     var res = newCopr.AddBack(nextStation);
                     switch (res)
                     {
-                        case ClassOneRoute.ClassOnePossibleRouteReturnStatus.different_station_and_different_route:
-                        case ClassOneRoute.ClassOnePossibleRouteReturnStatus.Same_station_in_same_route:
+                        case ClassOnePossibleRouteReturnStatus.different_station_and_different_route:
+                        case ClassOnePossibleRouteReturnStatus.Same_station_in_same_route:
                             continue;
                         //break;
-                        case ClassOneRoute.ClassOnePossibleRouteReturnStatus.Normal:
+                        case ClassOnePossibleRouteReturnStatus.Normal:
                             // if we switch multiple routes in the same station, we ignore it!
                             if (last2ndStation.站名.Equals(nextStation.站名) && lastStation.站名.Equals(nextStation.站名))
                             {
@@ -158,7 +158,7 @@ namespace Routing_Info_Viewer
                     //catch (DuplicateWaitObjectException dwoe) { continue; }
                     //catch (FormatException fe) { Console.WriteLine("Critical error, we are not designed to go here"); }
                 }
-                sortedPossibleRoutes.Sort((x, y) => (x.PassedRoutes - y.PassedRoutes));
+                sortedPossibleRoutes.Sort((x, y) => (x.PassedRouteNum - y.PassedRouteNum));
             }
 
             if (allPossibleRoutes.Count < 1) throw new KeyNotFoundException("Cannot find a proper path under current condition, max change route: 5");
@@ -199,12 +199,12 @@ namespace Routing_Info_Viewer
             DateTime startTime = DateTime.UtcNow;
 
 
-            List<ClassOneRoute> sortedPossibleRoutes = new List<ClassOneRoute>();
+            List<ClassOnePossibleRoute> sortedPossibleRoutes = new List<ClassOnePossibleRoute>();
 
             var starts = listRouteMileage.Where(x => x.站名.Equals(startStation));
             foreach (var start in starts)
             {
-                ClassOneRoute copr = new ClassOneRoute();
+                ClassOnePossibleRoute copr = new ClassOnePossibleRoute();
                 copr.AddBack(start);
                 sortedPossibleRoutes.Add(copr);
             }
@@ -217,7 +217,7 @@ namespace Routing_Info_Viewer
             {
                 /// 超时则直接返回，报告已经完成。
                 if ((DateTime.UtcNow - startTime).Minutes > 1) return;
-                ClassOneRoute copr = sortedPossibleRoutes.First();
+                ClassOnePossibleRoute copr = sortedPossibleRoutes.First();
                 sortedPossibleRoutes.RemoveAt(0);
 
                 lastStation = copr.Stations.Last();
@@ -240,7 +240,7 @@ namespace Routing_Info_Viewer
                 }
 
                 // if the length reaches max, ignore it!
-                if (copr.Length > maxLength || copr.PassedRoutes > MAX_ROUTES_BETWEEN_STATION) { continue; }
+                if (copr.Length > maxLength || copr.PassedRouteNum > MAX_ROUTES_BETWEEN_STATION) { continue; }
                 // else, add all the other station in the same line
                 // or in the same station.
 
@@ -274,15 +274,15 @@ namespace Routing_Info_Viewer
                 {
                     //try
                     //{
-                    ClassOneRoute newCopr = new ClassOneRoute(copr);
+                    ClassOnePossibleRoute newCopr = new ClassOnePossibleRoute(copr);
                     var res = newCopr.AddBack(nextStation);
                     switch (res)
                     {
-                        case ClassOneRoute.ClassOnePossibleRouteReturnStatus.different_station_and_different_route:
-                        case ClassOneRoute.ClassOnePossibleRouteReturnStatus.Same_station_in_same_route:
+                        case ClassOnePossibleRouteReturnStatus.different_station_and_different_route:
+                        case ClassOnePossibleRouteReturnStatus.Same_station_in_same_route:
                             continue;
                         //break;
-                        case ClassOneRoute.ClassOnePossibleRouteReturnStatus.Normal:
+                        case ClassOnePossibleRouteReturnStatus.Normal:
                             // if we switch multiple routes in the same station, we ignore it!
                             if (last2ndStation.站名.Equals(nextStation.站名) && lastStation.站名.Equals(nextStation.站名))
                             {
@@ -306,7 +306,7 @@ namespace Routing_Info_Viewer
                     //catch (DuplicateWaitObjectException dwoe) { continue; }
                     //catch (FormatException fe) { Console.WriteLine("Critical error, we are not designed to go here"); }
                 }
-                sortedPossibleRoutes.Sort((x, y) => (x.PassedRoutes - y.PassedRoutes));
+                sortedPossibleRoutes.Sort((x, y) => (x.PassedRouteNum - y.PassedRouteNum));
             }
 
         }
@@ -316,15 +316,15 @@ namespace Routing_Info_Viewer
             listBox.Items.Add(new TextBox() { Text = e.UserState.ToString() });
         }
 
-        List<ClassOneRoute> GetRouteByTwoStation(string startStation, string endStation, double maxLength, string train_code, int maxRoutes)
+        List<ClassOnePossibleRoute> GetRouteByTwoStation(string startStation, string endStation, double maxLength, string train_code, int maxRoutes)
         {
 
-            List<ClassOneRoute> sortedPossibleRoutes = new List<ClassOneRoute>();
-            List<ClassOneRoute> allPossibleRoutes = new List<ClassOneRoute>();
+            List<ClassOnePossibleRoute> sortedPossibleRoutes = new List<ClassOnePossibleRoute>();
+            List<ClassOnePossibleRoute> allPossibleRoutes = new List<ClassOnePossibleRoute>();
             var starts = listRouteMileage.Where(x => x.站名.Equals(startStation));
             foreach (var start in starts)
             {
-                ClassOneRoute copr = new ClassOneRoute();
+                ClassOnePossibleRoute copr = new ClassOnePossibleRoute();
                 copr.AddBack(start);
                 sortedPossibleRoutes.Add(copr);
             }
@@ -335,7 +335,7 @@ namespace Routing_Info_Viewer
 
             while (sortedPossibleRoutes.Count > 0)
             {
-                ClassOneRoute copr = sortedPossibleRoutes.First();
+                ClassOnePossibleRoute copr = sortedPossibleRoutes.First();
                 sortedPossibleRoutes.RemoveAt(0);
 
                 lastStation = copr.Stations.Last();
@@ -354,7 +354,7 @@ namespace Routing_Info_Viewer
                 }
 
                 // if the length reaches max, ignore it!
-                if (copr.Length > maxLength || copr.PassedRoutes > MAX_ROUTES_BETWEEN_STATION) { continue; }
+                if (copr.Length > maxLength || copr.PassedRouteNum > MAX_ROUTES_BETWEEN_STATION) { continue; }
                 // else, add all the other station in the same line
                 // or in the same station.
 
@@ -400,15 +400,15 @@ namespace Routing_Info_Viewer
                 {
                     //try
                     //{
-                    ClassOneRoute newCopr = new ClassOneRoute(copr);
+                    ClassOnePossibleRoute newCopr = new ClassOnePossibleRoute(copr);
                     var res = newCopr.AddBack(nextStation);
                     switch (res)
                     {
-                        case ClassOneRoute.ClassOnePossibleRouteReturnStatus.different_station_and_different_route:
-                        case ClassOneRoute.ClassOnePossibleRouteReturnStatus.Same_station_in_same_route:
+                        case ClassOnePossibleRouteReturnStatus.different_station_and_different_route:
+                        case ClassOnePossibleRouteReturnStatus.Same_station_in_same_route:
                             continue;
                         //break;
-                        case ClassOneRoute.ClassOnePossibleRouteReturnStatus.Normal:
+                        case ClassOnePossibleRouteReturnStatus.Normal:
                             // if we switch multiple routes in the same station, we ignore it!
                             if (last2ndStation.站名.Equals(nextStation.站名) && lastStation.站名.Equals(nextStation.站名))
                             {
@@ -432,7 +432,7 @@ namespace Routing_Info_Viewer
                     //catch (DuplicateWaitObjectException dwoe) { continue; }
                     //catch (FormatException fe) { Console.WriteLine("Critical error, we are not designed to go here"); }
                 }
-                sortedPossibleRoutes.Sort((x, y) => (x.PassedRoutes - y.PassedRoutes));
+                sortedPossibleRoutes.Sort((x, y) => (x.PassedRouteNum - y.PassedRouteNum));
             }
 
             if (allPossibleRoutes.Count < 1) throw new KeyNotFoundException("Cannot find a proper path under current condition, max change route:" + MAX_ROUTES_BETWEEN_STATION.ToString());
@@ -446,11 +446,11 @@ namespace Routing_Info_Viewer
         
 
 
-        List<ClassOneRoute> 创建经由(string[] 经过站点)
+        List<ClassOnePossibleRoute> 创建经由(string[] 经过站点)
         {
             if (经过站点.Length < 2) return null;
 
-            List<ClassOneRoute> ret = new List<ClassOneRoute>();
+            List<ClassOnePossibleRoute> ret = new List<ClassOnePossibleRoute>();
             if (经过站点.Length == 2)
             {
                 var starts = listRouteMileage.Where(x => x.站名.Equals(经过站点[0]));
@@ -461,10 +461,10 @@ namespace Routing_Info_Viewer
                     foreach(var end in ends)
                     {
                         if (start.线路名 == end.线路名)
-                            ret.Add(new ClassOneRoute()
+                            ret.Add(new ClassOnePossibleRoute()
                             {
                                 Length = Math.Abs(end.距起始站里程 - start.距起始站里程),
-                                Stations = new List<Class线路里程>() { start, end }
+                                Stations = new System.Collections.ObjectModel.ObservableCollection<Class线路里程>() { start, end }
                             });
                     }
                 }
