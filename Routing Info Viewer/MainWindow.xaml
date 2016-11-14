@@ -1,0 +1,21 @@
+﻿<Window x:Class="Routing_Info_Viewer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Routing_Info_Viewer"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="459.065" Width="564.66">
+    <!-- http://stackoverflow.com/questions/12206120/window-vs-page-vs-usercontrol-for-wpf-navigation 
+    Check the above link for using page to switch between different views. -->
+    <Grid>
+        <TextBox x:Name="textBoxFrom" HorizontalAlignment="Left" Height="23" Margin="53,53,0,0" TextWrapping="Wrap" Text="北京南" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="textBoxTo" HorizontalAlignment="Left" Height="23" Margin="211,53,0,0" TextWrapping="Wrap" Text="杭州东" VerticalAlignment="Top" Width="120"/>
+        <Button x:Name="buttonGetRoute" Content="Button" HorizontalAlignment="Left" Margin="373,56,0,0" VerticalAlignment="Top" Width="75" Click="buttonGetRoute_Click"/>
+        <TextBox x:Name="textBoxResult" HorizontalAlignment="Left" Height="86" Margin="10,81,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="170"/>
+        <ComboBox x:Name="comboBoxFrom" HorizontalAlignment="Left" Margin="39,23,0,0" VerticalAlignment="Top" Width="120" IsEditable="True" />
+        <Button x:Name="buttonReload" Content="Reload stations" Click="buttonReload_Click" HorizontalAlignment="Left" Margin="244,23,0,0" VerticalAlignment="Top" Width="75"/>
+        <ListBox x:Name="listBox" Margin="10,187,10,10"/>
+
+    </Grid>
+</Window>

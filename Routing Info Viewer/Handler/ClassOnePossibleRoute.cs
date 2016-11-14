@@ -31,7 +31,7 @@ namespace Routing_Info_Viewer.Handler
         #region Properties
 
         ObservableCollection<Class线路里程> _stations;
-        int _passedRouteNum = 0;
+        int _transferedRouteNum = 0;
         double _length = 0;
 
         /// <summary>
@@ -54,16 +54,16 @@ namespace Routing_Info_Viewer.Handler
         /// <summary>
         /// Number of different 线路 in this route.
         /// </summary>
-        public int PassedRouteNum
+        public int TransferedRouteNum
         {
             get
             {
-                return _passedRouteNum;
+                return _transferedRouteNum;
             }
 
             set
             {
-                _passedRouteNum = value;
+                _transferedRouteNum = value;
                 NotifyPropertyChanged();
             }
         }
@@ -156,7 +156,7 @@ namespace Routing_Info_Viewer.Handler
         {
             StringBuilder sb = new StringBuilder();
             Class线路里程 lastCRM = new Class线路里程();
-            sb.AppendFormat("全程{0}km, 途径{1}站, 走过{2}条线路, ", Length, Stations.Count, _passedRouteNum);
+            sb.AppendFormat("全程{0}km, 途径{1}站, 走过{2}条线路, ", Length, Stations.Count, _transferedRouteNum);
             for (int i = 0; i < Stations.Count; i++)
             {
                 // if not match the previous route
@@ -176,12 +176,12 @@ namespace Routing_Info_Viewer.Handler
         {
             var tmp = (ClassOnePossibleRoute)obj;
             return tmp.Length == Length
-                && tmp.PassedRouteNum == PassedRouteNum
+                && tmp.TransferedRouteNum == TransferedRouteNum
                 && tmp.Stations.SequenceEqual(Stations);
         }
         public override int GetHashCode()
         {
-            int retHash = Length.GetHashCode() ^ PassedRouteNum.GetHashCode();
+            int retHash = Length.GetHashCode() ^ TransferedRouteNum.GetHashCode();
             foreach (var sta in Stations) retHash ^= sta.GetHashCode();
             return retHash;
         }

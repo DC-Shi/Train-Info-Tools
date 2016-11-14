@@ -80,7 +80,7 @@ namespace Routing_Info_Viewer
                 }
 
                 // if the length reaches max, ignore it!
-                if (copr.Length > 5000 || copr.PassedRouteNum > 5) { continue; }
+                if (copr.Length > 5000 || copr.TransferedRouteNum > 5) { continue; }
                 // else, add all the other station in the same line
                 // or in the same station.
 
@@ -158,7 +158,7 @@ namespace Routing_Info_Viewer
                     //catch (DuplicateWaitObjectException dwoe) { continue; }
                     //catch (FormatException fe) { Console.WriteLine("Critical error, we are not designed to go here"); }
                 }
-                sortedPossibleRoutes.Sort((x, y) => (x.PassedRouteNum - y.PassedRouteNum));
+                sortedPossibleRoutes.Sort((x, y) => (x.TransferedRouteNum - y.TransferedRouteNum));
             }
 
             if (allPossibleRoutes.Count < 1) throw new KeyNotFoundException("Cannot find a proper path under current condition, max change route: 5");
@@ -240,7 +240,7 @@ namespace Routing_Info_Viewer
                 }
 
                 // if the length reaches max, ignore it!
-                if (copr.Length > maxLength || copr.PassedRouteNum > MAX_ROUTES_BETWEEN_STATION) { continue; }
+                if (copr.Length > maxLength || copr.TransferedRouteNum > MAX_ROUTES_BETWEEN_STATION) { continue; }
                 // else, add all the other station in the same line
                 // or in the same station.
 
@@ -306,7 +306,7 @@ namespace Routing_Info_Viewer
                     //catch (DuplicateWaitObjectException dwoe) { continue; }
                     //catch (FormatException fe) { Console.WriteLine("Critical error, we are not designed to go here"); }
                 }
-                sortedPossibleRoutes.Sort((x, y) => (x.PassedRouteNum - y.PassedRouteNum));
+                sortedPossibleRoutes.Sort((x, y) => (x.TransferedRouteNum - y.TransferedRouteNum));
             }
 
         }
@@ -354,7 +354,7 @@ namespace Routing_Info_Viewer
                 }
 
                 // if the length reaches max, ignore it!
-                if (copr.Length > maxLength || copr.PassedRouteNum > MAX_ROUTES_BETWEEN_STATION) { continue; }
+                if (copr.Length > maxLength || copr.TransferedRouteNum > MAX_ROUTES_BETWEEN_STATION) { continue; }
                 // else, add all the other station in the same line
                 // or in the same station.
 
@@ -432,7 +432,7 @@ namespace Routing_Info_Viewer
                     //catch (DuplicateWaitObjectException dwoe) { continue; }
                     //catch (FormatException fe) { Console.WriteLine("Critical error, we are not designed to go here"); }
                 }
-                sortedPossibleRoutes.Sort((x, y) => (x.PassedRouteNum - y.PassedRouteNum));
+                sortedPossibleRoutes.Sort((x, y) => (x.TransferedRouteNum - y.TransferedRouteNum));
             }
 
             if (allPossibleRoutes.Count < 1) throw new KeyNotFoundException("Cannot find a proper path under current condition, max change route:" + MAX_ROUTES_BETWEEN_STATION.ToString());
