@@ -117,7 +117,7 @@ namespace Routing_Info_Viewer.Handler
             }
             foreach (var s in Stations)
             {
-                if (s.Equals(csn)) // we add one station in the same route that added before, throw new exception
+                if (s.站名.Equals(csn.站名)&&s.线路名.Equals(csn.线路名)) // we add one station in the same route that added before, throw new exception
                                    //throw new DuplicateWaitObjectException("Encounter same station in same route.");
                     return ClassOnePossibleRouteReturnStatus.Same_station_in_same_route;
                 // 三亚——三亚的情况被排除。
@@ -180,19 +180,22 @@ namespace Routing_Info_Viewer.Handler
             return sb.ToString();
         }
 
-        public override bool Equals(object obj)
-        {
-            var tmp = (ClassOnePossibleRoute)obj;
-            return tmp.Length == Length
-                && tmp.TransferedRouteNum == TransferedRouteNum
-                && tmp.Stations.SequenceEqual(Stations);
-        }
-        public override int GetHashCode()
-        {
-            int retHash = Length.GetHashCode() ^ TransferedRouteNum.GetHashCode();
-            foreach (var sta in Stations) retHash ^= sta.GetHashCode();
-            return retHash;
-        }
+        //public override bool Equals(object obj)
+        //{
+        //    /// DisconnectedItem would appear if you resize the window very quickly and item is out of view area.
+        //    /// Which would lead to invalid cast.
+        //    var tmp = obj as ClassOnePossibleRoute;
+        //    //if (tmp == null) return false;
+        //    return tmp.Length == Length
+        //        && tmp.TransferedRouteNum == TransferedRouteNum
+        //        && tmp.Stations.SequenceEqual(Stations);
+        //}
+        //public override int GetHashCode()
+        //{
+        //    int retHash = Length.GetHashCode() ^ TransferedRouteNum.GetHashCode();
+        //    foreach (var sta in Stations) retHash ^= sta.GetHashCode();
+        //    return retHash;
+        //}
 
         #endregion
     }
