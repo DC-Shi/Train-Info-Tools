@@ -1,4 +1,5 @@
 ﻿using Routing_Info_Viewer.Handler.Database;
+using Routing_Info_Viewer.layout_class;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +22,13 @@ namespace Routing_Info_Viewer
 
             if (element != null && item != null)
             {
-                if(item is Class线路里程)
+                if (item is Class线路里程)
                 {
                     return element.FindResource("StationInfoTemplate") as DataTemplate;
+                }
+                if (item is ClassIntervalInfo)
+                {
+                    return element.FindResource("IntervalInfoTemplate") as DataTemplate;
                 }
             }
 

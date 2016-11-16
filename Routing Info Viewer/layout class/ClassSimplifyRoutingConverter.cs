@@ -1,5 +1,6 @@
 ﻿using Routing_Info_Viewer.Handler;
 using Routing_Info_Viewer.Handler.Database;
+using Routing_Info_Viewer.layout_class;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -23,22 +24,39 @@ namespace Routing_Info_Viewer
             if (onePossibleRoute is ClassOnePossibleRoute)
             {
                 var curRoute = onePossibleRoute as ClassOnePossibleRoute;
-                List<Class线路里程> ret = new List<Class线路里程>();
+                List<object> ret = new List<object>();
                 /// Add first station.
                 ret.Add(curRoute.Stations[0]);
 
-                for(int i = 1; i < curRoute.Stations.Count - 1; i++)
+                int lastStationIdx = 0;
+                for (int i = 0; i < curRoute.Stations.Count; i++)
                 {
-                    /// If current station is not the same route with previous one, or not the same with the next one, we should add it.
-                    if ((ret.Last().线路名 != curRoute.Stations[i].线路名) ||
-                        (curRoute.Stations[i].线路名 != curRoute.Stations[i + 1].线路名))
+                    /// If current station is not the same route with previous one, we should add it.
+                    if (curRoute.Stations[lastStationIdx].线路名 != curRoute.Stations[i].线路名)
                     {
+                        /// Add the interval
+                        ret.Add(new ClassIntervalInfo()
+                        {
+                            IntervalStartStation = curRoute.Stations[lastStationIdx],
+                            IntervalEndStation = curRoute.Stations[i - 1]
+                        });
+                        /// And add the station
                         ret.Add(curRoute.Stations[i]);
+                        lastStationIdx = i;
                     }
                 }
 
-                /// Add the last station.
+                /// Add the last station
+                /// Add the interval
+                ret.Add(new ClassIntervalInfo()
+                {
+                    IntervalStartStation = curRoute.Stations[lastStationIdx],
+                    IntervalEndStation = curRoute.Stations.Last()
+                });
+                /// And add the station
                 ret.Add(curRoute.Stations.Last());
+
+
                 return ret;
             }
             throw new InvalidCastException("Cannot convert the value to ClassOnePossibleRoute");

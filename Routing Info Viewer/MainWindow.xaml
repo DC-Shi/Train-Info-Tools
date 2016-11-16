@@ -11,29 +11,14 @@
         <local:ClassRoutingTemplateSelector x:Key="RoutingTemplateSelector"/>
 
         <DataTemplate x:Key="StationInfoTemplate">
-            <StackPanel>
-                <TextBlock Text="{Binding 站名}" FontSize="{DynamicResource {x:Static SystemFonts.CaptionFontSizeKey}}" FontWeight="Bold" HorizontalAlignment="Center"/>
-                <TextBlock>
-                    <TextBlock.Text>
-                        <MultiBinding StringFormat="{}{0}{1}km">
-                            <Binding Path="线路名" />
-                            <Binding Path="距起始站里程" />
-                        </MultiBinding>
-                    </TextBlock.Text>
-                </TextBlock>
-            </StackPanel>
+            <TextBlock Text="{Binding 站名}" FontSize="{DynamicResource {x:Static SystemFonts.CaptionFontSizeKey}}" FontWeight="Bold" HorizontalAlignment="Center"/>
         </DataTemplate>
         <DataTemplate x:Key="IntervalInfoTemplate">
             <StackPanel>
-                <TextBlock Text="{Binding 站名}" FontSize="{DynamicResource {x:Static SystemFonts.CaptionFontSizeKey}}" FontWeight="Bold" HorizontalAlignment="Center"/>
-                <TextBlock>
-                    <TextBlock.Text>
-                        <MultiBinding StringFormat="{}{0}{1}km">
-                            <Binding Path="线路名" />
-                            <Binding Path="距起始站里程" />
-                        </MultiBinding>
-                    </TextBlock.Text>
-                </TextBlock>
+                <TextBlock Text="{Binding LineName}" HorizontalAlignment="Center"/>
+                <Separator/>
+                <Separator/>
+                <TextBlock Text="{Binding IntervalDistance, StringFormat={}区间长度：{0}km}" HorizontalAlignment="Center"/>
             </StackPanel>
         </DataTemplate>
     </Window.Resources>
@@ -42,7 +27,7 @@
     <Grid>
         <TextBox x:Name="textBoxFrom" HorizontalAlignment="Left" Height="23" Margin="53,53,0,0" TextWrapping="Wrap" Text="北京南" VerticalAlignment="Top" Width="120"/>
         <TextBox x:Name="textBoxTo" HorizontalAlignment="Left" Height="23" Margin="211,53,0,0" TextWrapping="Wrap" Text="杭州东" VerticalAlignment="Top" Width="120"/>
-        <TextBox x:Name="textBoxResult" HorizontalAlignment="Left" Height="86" Margin="10,81,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="170"/>
+        <TextBox x:Name="textBoxResult" HorizontalAlignment="Left" Height="86" Margin="377,86,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="170"/>
         <ComboBox x:Name="comboBoxFrom" HorizontalAlignment="Left" Margin="39,23,0,0" VerticalAlignment="Top" Width="120" IsEditable="True" />
         <Button x:Name="buttonReload" Content="Reload stations" Click="buttonReload_Click" HorizontalAlignment="Left" Margin="244,23,0,0" VerticalAlignment="Top" Width="75"/>
         <ListBox x:Name="listBox" Margin="10,187,10,10" ItemsSource="{Binding SortedPossibleRoutes}">
