@@ -34,7 +34,7 @@ namespace Routing_Info_Viewer
             listRouteMileage = classDB.ListRouteMileage;
             listRouteName = classDB.ListRouteName;
             listStationName = classDB.ListStationName;
-            listBox.Items.Add("Database loaded.");
+            textBoxResult.Text += ("Database loaded.");
         }
 
         List<Class线路里程> listRouteMileage = new List<Class线路里程>();
@@ -488,6 +488,52 @@ namespace Routing_Info_Viewer
         void NormalPrint(object obj)
         {
             Console.WriteLine(DateTime.Now.ToLongTimeString() + " " + obj);
+        }
+
+        private void buttonGetStationInfo_Click(object sender, RoutedEventArgs e)
+        {
+            /// 最多的是8条线路，北京站
+            /// 京原线	京西线	沙河线	京沪线	京哈线	京广线	京承线	丰沙线	北京直通线
+            /// >= 5条线路的，只有25个车站
+            var copyList = new List<Class线路里程>(listRouteMileage);
+            copyList.Sort((x, y) => string.Compare(x.站名, y.站名));
+            int repeatedTimes = 1;
+            int junctions = 0;
+            for (int i = 1; i < copyList.Count; i++)
+            {
+                if (copyList[i].站名 == copyList[i - 1].站名)
+                    repeatedTimes++;
+                else
+                {
+                    if (repeatedTimes >= 5)
+                    {
+                        textBoxResult.Text += string.Format("\r\n{0}\t", copyList[i - 1].站名);
+                        var thisStationRoutes = listRouteMileage.Where(x => x.站名 == copyList[i - 1].站名);
+                        foreach(var s in thisStationRoutes)
+                        {
+                            textBoxResult.Text += string.Format("{0}\t", s.线路名);
+                        }
+                        textBoxResult.Text += string.Format("\r\n");
+                    }
+                    if (repeatedTimes >= 2)
+                        junctions++;
+                    repeatedTimes = 1;
+                }
+            }
+            /// 线路交点车站：697, 总计车站：4165
+            textBoxResult.Text += string.Format("线路交点车站：{0}, 总计车站：{1}\r\n", junctions, listStationName.Count);
+        }
+
+        private void buttonNewMethod_Click(object sender, RoutedEventArgs e)
+        {
+            ClassMultipleRoutes cmr = new ClassMultipleRoutes();
+            listBox.DataContext = cmr;
+            cmr.StartStation = textBoxFrom.Text;
+            cmr.EndStation = textBoxTo.Text;
+            cmr.MaxCount = 5;
+            cmr.MaxLength = 2000;
+            cmr.MaxTransfers = 4;
+            cmr.FindInBackground(classDB);
         }
     }
 }

@@ -97,6 +97,8 @@ namespace Routing_Info_Viewer.Handler
         public ClassOnePossibleRoute(ClassOnePossibleRoute copr)
         {
             Stations = new ObservableCollection<Class线路里程>(copr.Stations);
+            Length = copr.Length;
+            TransferedRouteNum = copr.TransferedRouteNum;
         }
 
         #endregion
@@ -108,6 +110,8 @@ namespace Routing_Info_Viewer.Handler
             if ((Stations == null) || (Stations.Count == 0))
             {
                 Stations = new ObservableCollection<Class线路里程>();
+                Length = 0;
+                TransferedRouteNum = 1;
                 Stations.Add(csn);
                 return ClassOnePossibleRouteReturnStatus.Normal;
             }
@@ -125,12 +129,14 @@ namespace Routing_Info_Viewer.Handler
             if (nearbyStation.站名.Equals(csn.站名) && !nearbyStation.线路名.Equals(csn.线路名))
             {
                 Stations.Insert(idx, csn);
+                TransferedRouteNum += 1;
                 return ClassOnePossibleRouteReturnStatus.Normal;
             }
             // if we are in the same route, add the station and add the length
             if (!nearbyStation.站名.Equals(csn.站名) && nearbyStation.线路名.Equals(csn.线路名))
             {
                 Stations.Insert(idx, csn);
+                Length += Math.Abs(nearbyStation.距起始站里程 - csn.距起始站里程);
                 return ClassOnePossibleRouteReturnStatus.Normal;
             }
 
@@ -143,6 +149,8 @@ namespace Routing_Info_Viewer.Handler
         {
             if ((Stations == null) || (Stations.Count == 0))
             {
+                Length = 0;
+                TransferedRouteNum = 1;
                 Stations = new ObservableCollection<Class线路里程>();
                 Stations.Add(csn);
                 return ClassOnePossibleRouteReturnStatus.Normal;
@@ -156,7 +164,7 @@ namespace Routing_Info_Viewer.Handler
         {
             StringBuilder sb = new StringBuilder();
             Class线路里程 lastCRM = new Class线路里程();
-            sb.AppendFormat("全程{0}km, 途径{1}站, 走过{2}条线路, ", Length, Stations.Count, _transferedRouteNum);
+            sb.AppendFormat("全程{0}km, 途径{1}站, 走过{2}条线路, ", Length, Stations.Count, TransferedRouteNum);
             for (int i = 0; i < Stations.Count; i++)
             {
                 // if not match the previous route

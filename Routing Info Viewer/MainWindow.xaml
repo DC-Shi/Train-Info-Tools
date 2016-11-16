@@ -15,7 +15,10 @@
         <TextBox x:Name="textBoxResult" HorizontalAlignment="Left" Height="86" Margin="10,81,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="170"/>
         <ComboBox x:Name="comboBoxFrom" HorizontalAlignment="Left" Margin="39,23,0,0" VerticalAlignment="Top" Width="120" IsEditable="True" />
         <Button x:Name="buttonReload" Content="Reload stations" Click="buttonReload_Click" HorizontalAlignment="Left" Margin="244,23,0,0" VerticalAlignment="Top" Width="75"/>
-        <ListBox x:Name="listBox" Margin="10,187,10,10"/>
+        <ListBox x:Name="listBox" Margin="10,187,10,10" ItemsSource="{Binding SortedPossibleRoutes}">
+        </ListBox>
+        <Button x:Name="buttonGetStationInfo" Content="统计车站所在线路数" HorizontalAlignment="Left" Margin="185,124,0,0" VerticalAlignment="Top" Width="161" Click="buttonGetStationInfo_Click"/>
+        <Button x:Name="buttonNewMethod" Content="用新方法获取路由" HorizontalAlignment="Left" Margin="399,124,0,0" VerticalAlignment="Top" Width="75" Click="buttonNewMethod_Click"/>
 
     </Grid>
 </Window>

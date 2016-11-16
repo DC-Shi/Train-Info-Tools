@@ -36,6 +36,9 @@ namespace Routing_Info_Viewer.Handler
         int maxLength = 5000;
         int maxCount = 5;
         int maxTransfers = 4;
+        double timeout = 0.5;
+
+        private BackgroundWorker bwFind = null;
 
         /// <summary>
         /// Possible routes that from start to end.
@@ -139,138 +142,188 @@ namespace Routing_Info_Viewer.Handler
             }
         }
 
-        #endregion
-
-        void Find(ClassDatabase db)
-        {            
-            DateTime startTime = DateTime.UtcNow;
-
-            /// Use list to store currently scanned routes.
-            /// Sorted by minimum route transfers.
-            List<ClassOnePossibleRoute> sortedPartialRoutes = new List<ClassOnePossibleRoute>();
-
-            /// Find all routes that contains start station.
-            var starts = db.ListRouteMileage.Where(x => x.站名.Equals(StartStation));
-            foreach (var start in starts)
+        /// <summary>
+        /// Timeout of background searching.
+        /// </summary>
+        public double Timeout
+        {
+            get
             {
-                ClassOnePossibleRoute copr = new ClassOnePossibleRoute();
-                copr.AddBack(start);
-                sortedPartialRoutes.Add(copr);
+                return timeout;
             }
 
-            /// Remember last two stations so we assure only 1 route change in 1 station.
-            var lastStation = new Class线路里程();
-            var last2ndStation = new Class线路里程();
-
-            /// From partial routes, use BFS to get target.
-            while (sortedPartialRoutes.Count > 0)
+            set
             {
-                /// Timeout, return.
-                if ((DateTime.UtcNow - startTime).Minutes > 1) return;
+                timeout = value;
+            }
+        }
 
-                /// Get the first partial route,
-                /// and removed from queue.
-                ClassOnePossibleRoute copr = sortedPartialRoutes.First();
-                sortedPartialRoutes.RemoveAt(0);
+        #endregion
 
-                /// Get last two stations.
-                lastStation = copr.Stations.Last();
-                if (copr.Stations.Count >= 2)
-                    last2ndStation = copr.Stations[copr.Stations.Count - 2];
-                else
-                    last2ndStation = new Class线路里程();
+        public void FindInBackground(ClassDatabase db)
+        {
+            /// Initialize BackgroundWorker.
+            if (bwFind == null)
+            {
+                bwFind = new BackgroundWorker();
+                bwFind.DoWork += BwFind_DoWork;
+                bwFind.WorkerReportsProgress = true;
+                bwFind.ProgressChanged += BwFind_ProgressChanged;
+                bwFind.WorkerSupportsCancellation = true;
+            }
 
-                /// if we encountered the end station, we simply add it.
-                if (lastStation.站名.Equals(EndStation))
+            /// TODO: support cancellation.
+            if (bwFind.IsBusy)
+            {
+                Timeout = -1;
+                bwFind.CancelAsync();
+            }
+
+            /// Start Finding...
+            bwFind.RunWorkerAsync(db);
+        }
+
+        private void BwFind_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            SortedPossibleRoutes.Add(e.UserState as ClassOnePossibleRoute);
+        }
+
+        private void BwFind_DoWork(object sender, DoWorkEventArgs e)
+        {
+            ClassDatabase db = e.Argument as ClassDatabase;
+            if (db != null)
+            {
+                DateTime startTime = DateTime.UtcNow;
+
+                /// Use list to store currently scanned routes.
+                /// Sorted by minimum route transfers.
+                List<ClassOnePossibleRoute> sortedPartialRoutes = new List<ClassOnePossibleRoute>();
+
+                /// Find all routes that contains start station.
+                var starts = db.ListRouteMileage.Where(x => x.站名.Equals(StartStation));
+                foreach (var start in starts)
                 {
-                    SortedPossibleRoutes.Add(copr);
-                    //DebugPrint(copr);
+                    ClassOnePossibleRoute copr = new ClassOnePossibleRoute();
+                    copr.AddBack(start);
+                    sortedPartialRoutes.Add(copr);
+                }
 
-                    /// Do not search if we have enough possible routes.
-                    if (SortedPossibleRoutes.Count > MaxCount)
+                /// Remember last two stations so we assure only 1 route change in 1 station.
+                var lastStation = new Class线路里程();
+                var last2ndStation = new Class线路里程();
+
+                /// From partial routes, use BFS to get target.
+                while (sortedPartialRoutes.Count > 0)
+                {
+                    /// Timeout, return.
+                    if ((DateTime.UtcNow - startTime).Minutes > Timeout) return;
+
+                    /// Get the first partial route,
+                    /// and removed from queue.
+                    ClassOnePossibleRoute copr = sortedPartialRoutes.First();
+                    sortedPartialRoutes.RemoveAt(0);
+
+                    /// Get last two stations.
+                    lastStation = copr.Stations.Last();
+                    if (copr.Stations.Count >= 2)
+                        last2ndStation = copr.Stations[copr.Stations.Count - 2];
+                    else
+                        last2ndStation = new Class线路里程();
+
+                    /// if we encountered the end station, we simply add it.
+                    if (lastStation.站名.Equals(EndStation))
                     {
-                        return;
+                        (sender as BackgroundWorker).ReportProgress(100 * SortedPossibleRoutes.Count / MaxCount, copr);
+                        //SortedPossibleRoutes.Add(copr);
+                        //DebugPrint(copr);
+
+                        /// Do not search if we have enough possible routes.
+                        if (SortedPossibleRoutes.Count > MaxCount)
+                        {
+                            return;
+                        }
+                        continue;
                     }
-                    continue;
-                }
 
-                /// if the length reaches max, ignore it!
-                if (copr.Length > MaxLength || copr.TransferedRouteNum > MaxTransfers) { continue; }
-                /// else, add all the other station in the same line
-                /// or in the same station.
+                    /// if the length reaches max, ignore it!
+                    if (copr.Length > MaxLength || copr.TransferedRouteNum > MaxTransfers) { continue; }
+                    /// else, add all the other station in the same line
+                    /// or in the same station.
 
-                /// Same staions, but different route
-                var allNextStations = db.ListRouteMileage.Where(
-                    x =>
-                        x.站名.Equals(lastStation.站名) && !x.线路名.Equals(lastStation.线路名)
-                    // 考虑到杜家坎是可以走的但是不能调头，因此此处取消该条件（“不能是不办理客运的线路连接点站”）。
-                    // 从而得到的结果是在线路连接点允许调头
-                    // 由于存在怀柔北——通州西区间的列车，要走行怀柔北线，怀柔北与怀柔均不是结算站，因此该条件取消（“当前站需要为结算站”）。
-                    ).ToList();
-                /// Same route, but different station
-                var sameRoute = db.ListRouteMileage.Where(x => x.线路名.Equals(lastStation.线路名)).ToList();
-                int idxOfLastStation = sameRoute.IndexOf(lastStation);
-                if (idxOfLastStation < 0)
-                { }//NormalPrint("Cannot find " + lastStation.ToString());
-                else
-                {
-                    /// If the last station of current checking route is not the first one on sameRoute,
-                    /// add to checking list.
-                    if ((idxOfLastStation > 0) && !allNextStations.Contains(sameRoute[idxOfLastStation - 1]))
-                        allNextStations.Add(sameRoute[idxOfLastStation - 1]);
-                    /// If the last station of current checking route is not the last one on sameRoute,
-                    /// add to checking list.
-                    if ((idxOfLastStation < sameRoute.Count - 1) && !allNextStations.Contains(sameRoute[idxOfLastStation + 1]))
-                        allNextStations.Add(sameRoute[idxOfLastStation + 1]);
-                }
-
-                /// Check all possible stations.
-                foreach (var nextStation in allNextStations)
-                {
-                    /// Create a possible route from current route.
-                    ClassOnePossibleRoute newCopr = new ClassOnePossibleRoute(copr);
-                    /// Add the current station to the back of the station list.
-                    var res = newCopr.AddBack(nextStation);
-                    /// Checking the result.
-                    switch (res)
+                    /// Same staions, but different route
+                    var allNextStations = db.ListRouteMileage.Where(
+                        x =>
+                            x.站名.Equals(lastStation.站名) && !x.线路名.Equals(lastStation.线路名)
+                        // 考虑到杜家坎是可以走的但是不能调头，因此此处取消该条件（“不能是不办理客运的线路连接点站”）。
+                        // 从而得到的结果是在线路连接点允许调头
+                        // 由于存在怀柔北——通州西区间的列车，要走行怀柔北线，怀柔北与怀柔均不是结算站，因此该条件取消（“当前站需要为结算站”）。
+                        ).ToList();
+                    /// Same route, but different station
+                    var sameRoute = db.ListRouteMileage.Where(x => x.线路名.Equals(lastStation.线路名)).ToList();
+                    int idxOfLastStation = sameRoute.IndexOf(lastStation);
+                    if (idxOfLastStation < 0)
+                    { }//NormalPrint("Cannot find " + lastStation.ToString());
+                    else
                     {
-                        /// Ignore if we encountered such error.
-                        case ClassOnePossibleRouteReturnStatus.different_station_and_different_route:
-                        case ClassOnePossibleRouteReturnStatus.Same_station_in_same_route:
-                            continue;
-                        /// If we added it successfully,
-                        case ClassOnePossibleRouteReturnStatus.Normal:
-                            /// if we switch multiple routes in the same station,
-                            /// There is no need to switch routes more than 2 tiems in same station,
-                            /// ignore it!
-                            if (last2ndStation.站名.Equals(nextStation.站名) && lastStation.站名.Equals(nextStation.站名))
-                            {
+                        /// If the last station of current checking route is not the first one on sameRoute,
+                        /// add to checking list.
+                        if ((idxOfLastStation > 0) && !allNextStations.Contains(sameRoute[idxOfLastStation - 1]))
+                            allNextStations.Add(sameRoute[idxOfLastStation - 1]);
+                        /// If the last station of current checking route is not the last one on sameRoute,
+                        /// add to checking list.
+                        if ((idxOfLastStation < sameRoute.Count - 1) && !allNextStations.Contains(sameRoute[idxOfLastStation + 1]))
+                            allNextStations.Add(sameRoute[idxOfLastStation + 1]);
+                    }
 
-                            }
-                            else
-                            {
-                                /// if we encounter first two station has a same name,
-                                /// The start station is not needed to switch route,
-                                /// ignore!
-                                if (last2ndStation.站名.Equals(string.Empty) && lastStation.站名.Equals(nextStation.站名)) { }
+                    /// Check all possible stations.
+                    foreach (var nextStation in allNextStations)
+                    {
+                        /// Create a possible route from current route.
+                        ClassOnePossibleRoute newCopr = new ClassOnePossibleRoute(copr);
+                        /// Add the current station to the back of the station list.
+                        var res = newCopr.AddBack(nextStation);
+                        /// Checking the result.
+                        switch (res)
+                        {
+                            /// Ignore if we encountered such error.
+                            case ClassOnePossibleRouteReturnStatus.different_station_and_different_route:
+                            case ClassOnePossibleRouteReturnStatus.Same_station_in_same_route:
+                                continue;
+                            /// If we added it successfully,
+                            case ClassOnePossibleRouteReturnStatus.Normal:
+                                /// if we switch multiple routes in the same station,
+                                /// There is no need to switch routes more than 2 tiems in same station,
+                                /// ignore it!
+                                if (last2ndStation.站名.Equals(nextStation.站名) && lastStation.站名.Equals(nextStation.站名))
+                                {
+
+                                }
                                 else
+                                {
+                                    /// if we encounter first two station has a same name,
+                                    /// The start station is not needed to switch route,
+                                    /// ignore!
+                                    if (last2ndStation.站名.Equals(string.Empty) && lastStation.站名.Equals(nextStation.站名)) { }
+                                    else
                                     /// if some station appears 3 times or more,
                                     /// means A-B-C-D-B, which is a loop,
                                     /// B in A-B & B-C & D-B,
                                     /// ignore it!
                                     /// Only add the station that did not in a loop.
                                     if (newCopr.Stations.Where(x => x.站名.Equals(nextStation.站名)).Count() <= 2)
-                                    sortedPartialRoutes.Add(newCopr);
-                            }
-                            break;
-                        default:
-                            throw new Exception("Critical error, we are not designed to go here");
+                                        sortedPartialRoutes.Add(newCopr);
+                                }
+                                break;
+                            default:
+                                throw new Exception("Critical error, we are not designed to go here");
 
+                        }
                     }
+                    /// Sort the list by transfer number.
+                    sortedPartialRoutes.Sort((x, y) => (x.TransferedRouteNum - y.TransferedRouteNum));
                 }
-                /// Sort the list by transfer number.
-                sortedPartialRoutes.Sort((x, y) => (x.TransferedRouteNum - y.TransferedRouteNum));
             }
         }
+        
     }
 }
