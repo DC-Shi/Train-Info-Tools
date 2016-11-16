@@ -25,12 +25,13 @@
     <!-- http://stackoverflow.com/questions/12206120/window-vs-page-vs-usercontrol-for-wpf-navigation 
     Check the above link for using page to switch between different views. -->
     <Grid>
-        <TextBox x:Name="textBoxFrom" HorizontalAlignment="Left" Height="23" Margin="53,53,0,0" TextWrapping="Wrap" Text="北京南" VerticalAlignment="Top" Width="120"/>
-        <TextBox x:Name="textBoxTo" HorizontalAlignment="Left" Height="23" Margin="211,53,0,0" TextWrapping="Wrap" Text="杭州东" VerticalAlignment="Top" Width="120"/>
-        <TextBox x:Name="textBoxResult" HorizontalAlignment="Left" Height="86" Margin="377,86,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="170"/>
-        <ComboBox x:Name="comboBoxFrom" HorizontalAlignment="Left" Margin="39,23,0,0" VerticalAlignment="Top" Width="120" IsEditable="True" />
-        <Button x:Name="buttonReload" Content="Reload stations" Click="buttonReload_Click" HorizontalAlignment="Left" Margin="244,23,0,0" VerticalAlignment="Top" Width="75"/>
-        <ListBox x:Name="listBox" Margin="10,187,10,10" ItemsSource="{Binding SortedPossibleRoutes}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="185*"/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+        <ComboBox x:Name="comboBoxFrom" HorizontalAlignment="Left" Margin="402,122,0,0" VerticalAlignment="Top" Width="120" IsEditable="True" />
+        <Button x:Name="buttonReload" Content="Reload stations" Click="buttonReload_Click" HorizontalAlignment="Left" Margin="447,97,0,0" VerticalAlignment="Top" Width="75"/>
+        <ListBox x:Name="listBox" Margin="10,239,10,10" ItemsSource="{Binding SortedPossibleRoutes}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
@@ -56,7 +57,43 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <Button x:Name="buttonNewMethod" Content="用新方法获取路由" HorizontalAlignment="Left" Margin="351,52,0,0" VerticalAlignment="Top" Width="75" Click="buttonNewMethod_Click"/>
+        <StatusBar Grid.Row="1" Margin="0">
+            <TextBlock x:Name="textBlockResult"/>
+        </StatusBar>
+        <GroupBox x:Name="groupBox" Header="径路信息" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="224" Width="200">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100*"/>
+                    <ColumnDefinition Width="100*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="24"/>
+                    <RowDefinition Height="24"/>
+                    <RowDefinition Height="24"/>
+                    <RowDefinition Height="24"/>
+                    <RowDefinition Height="24"/>
+                    <RowDefinition Height="24"/>
+                    <RowDefinition Height="54*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="起点站" VerticalAlignment="Center"/>
+                <TextBox x:Name="textBoxFrom" Text="北京南" Grid.Column="1" VerticalContentAlignment="Center"/>
+                <TextBlock Text="终点站" VerticalAlignment="Center" Grid.Row="1"/>
+                <TextBox x:Name="textBoxTo" Text="杭州东" Grid.Column="1" Grid.Row="1" VerticalContentAlignment="Center"/>
+                <TextBlock Text="最长里程" VerticalAlignment="Center" Grid.Row="2"/>
+                <TextBox x:Name="textBoxMaxLength" Text="2000" Grid.Column="1" Grid.Row="2" VerticalContentAlignment="Center"/>
+                <TextBlock Text="km " VerticalAlignment="Center" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Right"/>
+                <TextBlock Text="最多经由" VerticalAlignment="Center" Grid.Row="3"/>
+                <TextBox x:Name="textBoxMaxTransfers" Text="4" Grid.Column="1" Grid.Row="3" VerticalContentAlignment="Center"/>
+                <TextBlock Text="条路线 " VerticalAlignment="Center" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Right"/>
+                
+                <TextBlock Text="数量限制" VerticalAlignment="Center" Grid.Row="4"/>
+                <TextBox x:Name="textBoxMaxCount" Text="5" Grid.Column="1" Grid.Row="4" VerticalContentAlignment="Center"/>
+                <TextBlock Text="时间限制" VerticalAlignment="Center" Grid.Row="5"/>
+                <TextBox x:Name="textBoxTimeout" Text="0.5" Grid.Column="1" Grid.Row="5" VerticalContentAlignment="Center"/>
+                <TextBlock Text="min " VerticalAlignment="Center" Grid.Column="1" Grid.Row="5" HorizontalAlignment="Right"/>
+                <Button x:Name="buttonNewMethod" Content="用新方法获取路由"  Click="buttonNewMethod_Click" Grid.ColumnSpan="2" Grid.Row="6"/>
+            </Grid>
+        </GroupBox>
 
     </Grid>
 </Window>

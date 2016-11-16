@@ -33,7 +33,7 @@ namespace Routing_Info_Viewer.Handler
         ObservableCollection<ClassOnePossibleRoute> _sortedPossibleRoutes = new ObservableCollection<ClassOnePossibleRoute>();
         string _startStation;
         string _endStation;
-        int maxLength = 5000;
+        double maxLength = 5000;
         int maxCount = 5;
         int maxTransfers = 4;
         double timeout = 0.5;
@@ -94,7 +94,7 @@ namespace Routing_Info_Viewer.Handler
         /// Max length of the route.
         /// The longest train services currently is Guangzhou - Lhasa Z264/Z265, 4976km.
         /// </summary>
-        public int MaxLength
+        public double MaxLength
         {
             get
             {
@@ -216,7 +216,7 @@ namespace Routing_Info_Viewer.Handler
                 while (sortedPartialRoutes.Count > 0)
                 {
                     /// Timeout, return.
-                    if ((DateTime.UtcNow - startTime).Minutes > Timeout) return;
+                    if ((DateTime.UtcNow - startTime).TotalMinutes > Timeout) return;
 
                     /// Get the first partial route,
                     /// and removed from queue.

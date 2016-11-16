@@ -31,7 +31,7 @@ namespace Routing_Info_Viewer
             InitializeComponent();
 
             classDB = new ClassDatabase("data.mdb");
-            textBoxResult.Text += ("Database loaded.");
+            textBlockResult.Text += ("Database loaded.");
         }
         
 
@@ -60,12 +60,17 @@ namespace Routing_Info_Viewer
         private void buttonNewMethod_Click(object sender, RoutedEventArgs e)
         {
             ClassMultipleRoutes cmr = new ClassMultipleRoutes();
+            if(listBox.DataContext is ClassMultipleRoutes)
+            {
+                (listBox.DataContext as ClassMultipleRoutes).Timeout = 0;
+            }
             listBox.DataContext = cmr;
             cmr.StartStation = textBoxFrom.Text;
             cmr.EndStation = textBoxTo.Text;
-            cmr.MaxCount = 5;
-            cmr.MaxLength = 2000;
-            cmr.MaxTransfers = 4;
+            cmr.MaxCount = int.Parse(textBoxMaxCount.Text);
+            cmr.MaxLength = double.Parse(textBoxMaxLength.Text);
+            cmr.MaxTransfers = int.Parse(textBoxMaxTransfers.Text);
+            cmr.Timeout = double.Parse(textBoxTimeout.Text);
             cmr.FindInBackground(classDB);
         }
     }
