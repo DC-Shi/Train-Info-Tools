@@ -117,7 +117,7 @@ namespace Routing_Info_Viewer.Handler
             }
             foreach (var s in Stations)
             {
-                if (s.站名.Equals(csn.站名)&&s.线路名.Equals(csn.线路名)) // we add one station in the same route that added before, throw new exception
+                if (s.Equals(csn)) // we add one station in the same route that added before, throw new exception
                                    //throw new DuplicateWaitObjectException("Encounter same station in same route.");
                     return ClassOnePossibleRouteReturnStatus.Same_station_in_same_route;
                 // 三亚——三亚的情况被排除。

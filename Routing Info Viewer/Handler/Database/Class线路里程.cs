@@ -51,22 +51,19 @@ namespace Routing_Info_Viewer.Handler.Database
         }
         #endregion
 
+        public bool Equals(Class线路里程 crm)
+        {
+            return 线路名.Equals(crm.线路名)
+                && 站名.Equals(crm.站名)
+                && 距起始站里程.Equals(crm.距起始站里程);
+        }
+
         #region Override functions.
 
         public override string ToString()
         {
             return string.Format("{0}({1}@{2}km)", 站名, 线路名, 距起始站里程);
         }
-        //public override bool Equals(object obj)
-        //{
-        //    return 线路名.Equals(((Class线路里程)obj).线路名)
-        //        && 站名.Equals(((Class线路里程)obj).站名)
-        //        && 距起始站里程.Equals(((Class线路里程)obj).距起始站里程);
-        //}
-        //public override int GetHashCode()
-        //{
-        //    return 线路名.GetHashCode() ^ 站名.GetHashCode() ^ 距起始站里程.GetHashCode();
-        //}
 
         #endregion
     }
