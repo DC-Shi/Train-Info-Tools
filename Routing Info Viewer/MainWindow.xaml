@@ -6,6 +6,9 @@
         xmlns:local="clr-namespace:Routing_Info_Viewer"
         mc:Ignorable="d"
         Title="MainWindow" Height="459.065" Width="564.66">
+    <Window.Resources>
+        <local:ClassSimplifyRoutingConverter x:Key="SimplifyRoutingConverter"/>
+    </Window.Resources>
     <!-- http://stackoverflow.com/questions/12206120/window-vs-page-vs-usercontrol-for-wpf-navigation 
     Check the above link for using page to switch between different views. -->
     <Grid>
@@ -15,6 +18,33 @@
         <ComboBox x:Name="comboBoxFrom" HorizontalAlignment="Left" Margin="39,23,0,0" VerticalAlignment="Top" Width="120" IsEditable="True" />
         <Button x:Name="buttonReload" Content="Reload stations" Click="buttonReload_Click" HorizontalAlignment="Left" Margin="244,23,0,0" VerticalAlignment="Top" Width="75"/>
         <ListBox x:Name="listBox" Margin="10,187,10,10" ItemsSource="{Binding SortedPossibleRoutes}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <ListView ItemsSource="{Binding Converter={StaticResource SimplifyRoutingConverter}, Mode=OneWay}">
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding 站名}" FontSize="{DynamicResource {x:Static SystemFonts.CaptionFontSizeKey}}"/>
+                                    <TextBlock>
+                                        <TextBlock.Text>
+                                            <MultiBinding StringFormat="{}{0}@{1}">
+                                                <Binding Path="线路名" />
+                                                <Binding Path="距起始站里程" />
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
         </ListBox>
         <Button x:Name="buttonNewMethod" Content="用新方法获取路由" HorizontalAlignment="Left" Margin="351,52,0,0" VerticalAlignment="Top" Width="75" Click="buttonNewMethod_Click"/>
 

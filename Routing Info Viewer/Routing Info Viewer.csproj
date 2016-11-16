@@ -67,6 +67,7 @@
     <Compile Include="Handler\ClassDatabase.cs" />
     <Compile Include="Handler\ClassOnePossibleRouteReturnStatus.cs" />
     <Compile Include="Handler\ClassOnePossibleRoute.cs" />
+    <Compile Include="ClassSimplifyRoutingConverter.cs" />
     <Compile Include="Handler\Database\Class线路里程.cs" />
     <Compile Include="Handler\Database\Class线路名.cs" />
     <Compile Include="Handler\Database\Class站名.cs" />
