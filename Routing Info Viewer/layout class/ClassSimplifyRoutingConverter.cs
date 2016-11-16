@@ -20,9 +20,9 @@ namespace Routing_Info_Viewer
         public object Convert(object onePossibleRoute, Type typeTarget,
                               object param, CultureInfo culture)
         {
-            var curRoute = onePossibleRoute as ClassOnePossibleRoute;
-            if (curRoute != null)
+            if (onePossibleRoute is ClassOnePossibleRoute)
             {
+                var curRoute = onePossibleRoute as ClassOnePossibleRoute;
                 List<Class线路里程> ret = new List<Class线路里程>();
                 /// Add first station.
                 ret.Add(curRoute.Stations[0]);

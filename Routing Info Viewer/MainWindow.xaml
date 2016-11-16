@@ -8,6 +8,34 @@
         Title="MainWindow" Height="459.065" Width="564.66">
     <Window.Resources>
         <local:ClassSimplifyRoutingConverter x:Key="SimplifyRoutingConverter"/>
+        <local:ClassRoutingTemplateSelector x:Key="RoutingTemplateSelector"/>
+
+        <DataTemplate x:Key="StationInfoTemplate">
+            <StackPanel>
+                <TextBlock Text="{Binding 站名}" FontSize="{DynamicResource {x:Static SystemFonts.CaptionFontSizeKey}}" FontWeight="Bold" HorizontalAlignment="Center"/>
+                <TextBlock>
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="{}{0}{1}km">
+                            <Binding Path="线路名" />
+                            <Binding Path="距起始站里程" />
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="IntervalInfoTemplate">
+            <StackPanel>
+                <TextBlock Text="{Binding 站名}" FontSize="{DynamicResource {x:Static SystemFonts.CaptionFontSizeKey}}" FontWeight="Bold" HorizontalAlignment="Center"/>
+                <TextBlock>
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="{}{0}{1}km">
+                            <Binding Path="线路名" />
+                            <Binding Path="距起始站里程" />
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+            </StackPanel>
+        </DataTemplate>
     </Window.Resources>
     <!-- http://stackoverflow.com/questions/12206120/window-vs-page-vs-usercontrol-for-wpf-navigation 
     Check the above link for using page to switch between different views. -->
@@ -20,29 +48,26 @@
         <ListBox x:Name="listBox" Margin="10,187,10,10" ItemsSource="{Binding SortedPossibleRoutes}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <ListView ItemsSource="{Binding Converter={StaticResource SimplifyRoutingConverter}, Mode=OneWay}">
-                        <ListView.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Horizontal"/>
-                            </ItemsPanelTemplate>
-                        </ListView.ItemsPanel>
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel>
-                                    <TextBlock Text="{Binding 站名}" FontSize="{DynamicResource {x:Static SystemFonts.CaptionFontSizeKey}}"/>
-                                    <TextBlock>
-                                        <TextBlock.Text>
-                                            <MultiBinding StringFormat="{}{0}@{1}">
-                                                <Binding Path="线路名" />
-                                                <Binding Path="距起始站里程" />
-                                            </MultiBinding>
-                                        </TextBlock.Text>
-                                    </TextBlock>
-
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
+                    <StackPanel Orientation="Horizontal">
+                        <!-- https://social.msdn.microsoft.com/Forums/en-US/8825590a-95dc-4981-975e-3da6383fa5d1/how-to-make-textblock-selectable?forum=wpf -->
+                        <TextBox Background="Transparent" BorderThickness="0" IsReadOnly="True" TextWrapping="Wrap" >
+                            <TextBox.Text>
+                                <MultiBinding Mode="OneWay"
+                                        StringFormat="{}全程{0}km&#x0d;&#x0a;途径{1}站&#x0d;&#x0a;走过{2}条线路">
+                                    <Binding Path="Length" />
+                                    <Binding Path="Stations.Count" />
+                                    <Binding Path="TransferedRouteNum" />
+                                </MultiBinding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <ListView ItemsSource="{Binding Converter={StaticResource SimplifyRoutingConverter}, Mode=OneWay}" ItemTemplateSelector="{Binding Mode=OneWay, Source={StaticResource RoutingTemplateSelector}}" IsHitTestVisible="False" >
+                            <ListView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ListView.ItemsPanel>
+                        </ListView>
+                    </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
