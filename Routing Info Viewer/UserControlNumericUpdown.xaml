@@ -1,0 +1,36 @@
+﻿<UserControl x:Name="numericSlider" x:Class="Routing_Info_Viewer.UserControlNumericUpdown"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Routing_Info_Viewer"
+             mc:Ignorable="d" 
+             d:DesignHeight="48" d:DesignWidth="150">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30*"/>
+            <RowDefinition Height="24"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="24"/>
+            <ColumnDefinition Width="157*"/>
+            <ColumnDefinition Width="24"/>
+        </Grid.ColumnDefinitions>
+        <DockPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" >
+            <TextBlock x:Name="textBlockDescrption" TextWrapping="Wrap" Text="{Binding PrefixIntro, ElementName=numericSlider}"/>
+            <TextBlock x:Name="textBlockMetric" TextWrapping="Wrap" Text="{Binding PostfixMetric, ElementName=numericSlider}" DockPanel.Dock="Right" Width="40"/>
+            <TextBox x:Name="textBoxContent" TextWrapping="Wrap" Text="{Binding Value, ElementName=slider}"/>
+        </DockPanel>
+        <Slider x:Name="slider" Minimum="{Binding Minimum, ElementName=numericSlider}" SmallChange="1" TickPlacement="TopLeft" Value="{Binding Value, ElementName=numericSlider}" Maximum="{Binding Maximum, ElementName=numericSlider}" Grid.ColumnSpan="3" Grid.Row="1" IsSnapToTickEnabled="True"/>
+        <Button x:Name="buttonIncrease" FontWeight="Bold" Click="buttonIncrease_Click" Grid.Column="2">
+            <Viewbox>
+                <TextBlock Text="&#x2795;"/>
+            </Viewbox>
+        </Button>
+        <Button x:Name="buttonDecrease" FontWeight="Bold" Click="buttonDecrease_Click">
+            <Viewbox>
+                <TextBlock Text="&#x2796;"/>
+            </Viewbox>
+        </Button>
+    </Grid>
+</UserControl>

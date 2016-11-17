@@ -55,6 +55,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="UserControlNumericUpdown.xaml.cs">
+      <DependentUpon>UserControlNumericUpdown.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -68,6 +71,7 @@
     <Compile Include="Handler\ClassOnePossibleRouteReturnStatus.cs" />
     <Compile Include="Handler\ClassOnePossibleRoute.cs" />
     <Compile Include="layout class\ClassIntervalInfo.cs" />
+    <Compile Include="layout class\ClassRouteNumberConverter.cs" />
     <Compile Include="layout class\ClassSimplifyRoutingConverter.cs" />
     <Compile Include="layout class\ClassRoutingTemplateSelector.cs" />
     <Compile Include="Handler\Database\Class线路里程.cs" />
@@ -77,6 +81,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="UserControlNumericUpdown.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

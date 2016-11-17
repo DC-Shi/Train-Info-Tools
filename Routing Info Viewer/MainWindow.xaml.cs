@@ -65,13 +65,19 @@ namespace Routing_Info_Viewer
                 (listBox.DataContext as ClassMultipleRoutes).Timeout = 0;
             }
             listBox.DataContext = cmr;
-            cmr.StartStation = textBoxFrom.Text;
-            cmr.EndStation = textBoxTo.Text;
-            cmr.MaxCount = int.Parse(textBoxMaxCount.Text);
-            cmr.MaxLength = double.Parse(textBoxMaxLength.Text);
-            cmr.MaxTransfers = int.Parse(textBoxMaxTransfers.Text);
-            cmr.Timeout = double.Parse(textBoxTimeout.Text);
-            cmr.FindInBackground(classDB);
+            try {
+                cmr.StartStation = textBoxFrom.Text;
+                cmr.EndStation = textBoxTo.Text;
+                cmr.MaxCount = int.Parse(textBoxMaxCount.Text);
+                cmr.MaxLength = double.Parse(textBoxMaxLength.Text);
+                cmr.MaxTransfers = int.Parse(textBoxMaxTransfers.Text);
+                cmr.Timeout = double.Parse(textBoxTimeout.Text);
+                cmr.FindInBackground(classDB);
+            }
+            catch(FormatException fe)
+            {
+                textBlockResult.Text = fe.Message;
+            }
         }
     }
 }
