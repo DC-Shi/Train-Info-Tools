@@ -280,20 +280,34 @@ namespace Routing_Info_Viewer.Handler
                         /// If the last station of current checking route is not the first one on sameRoute,
                         /// add to checking list.
                         if ((idxOfLastStation > 0) && !allNextStations.Contains(sameRoute[idxOfLastStation - 1]))
-                            allNextStations.Add(sameRoute[idxOfLastStation - 1]);
+                            /// Do not add duplicate station.
+                            if (!copr.Stations.Contains(sameRoute[idxOfLastStation - 1]))
+                                allNextStations.Add(sameRoute[idxOfLastStation - 1]);
                         /// If the last station of current checking route is not the last one on sameRoute,
                         /// add to checking list.
                         if ((idxOfLastStation < sameRoute.Count - 1) && !allNextStations.Contains(sameRoute[idxOfLastStation + 1]))
-                            allNextStations.Add(sameRoute[idxOfLastStation + 1]);
+                            /// Do not add duplicate station.
+                            if (!copr.Stations.Contains(sameRoute[idxOfLastStation + 1]))
+                                allNextStations.Add(sameRoute[idxOfLastStation + 1]);
                     }
 
                     /// Check all possible stations.
                     foreach (var nextStation in allNextStations)
                     {
-                        /// Create a possible route from current route.
-                        ClassOnePossibleRoute newCopr = new ClassOnePossibleRoute(copr);
-                        /// Add the current station to the back of the station list.
-                        var res = newCopr.AddBack(nextStation);
+                        ClassOnePossibleRoute newCopr;
+                        ClassOnePossibleRouteReturnStatus res;
+                        if (allNextStations.Count == 1)
+                        {
+                            /// Contains only 1 next station, so directly add, no need to create new one.
+                            res =  copr.AddBack(nextStation);
+                            newCopr = copr;
+                        }
+                        else {
+                            /// Create a possible route from current route.
+                            newCopr = new ClassOnePossibleRoute(copr);
+                            /// Add the current station to the back of the station list.
+                            res = newCopr.AddBack(nextStation);
+                        }
                         /// Checking the result.
                         switch (res)
                         {
