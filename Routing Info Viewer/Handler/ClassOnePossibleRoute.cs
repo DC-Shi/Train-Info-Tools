@@ -103,7 +103,7 @@ namespace Routing_Info_Viewer.Handler
 
         #endregion
 
-        public ClassOnePossibleRouteReturnStatus Add(Class线路里程 csn, int idx)
+        ClassOnePossibleRouteReturnStatus Add(Class线路里程 csn, int idx)
         {
             if (!(idx == 0) && !(idx == Stations.Count)) throw new NotImplementedException();
             // if this one is a new one, add it directly!

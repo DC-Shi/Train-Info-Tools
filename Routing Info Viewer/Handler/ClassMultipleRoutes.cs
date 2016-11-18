@@ -170,6 +170,7 @@ namespace Routing_Info_Viewer.Handler
                 bwFind.WorkerReportsProgress = true;
                 bwFind.ProgressChanged += BwFind_ProgressChanged;
                 bwFind.WorkerSupportsCancellation = true;
+                bwFind.RunWorkerCompleted += BwFind_RunWorkerCompleted;
             }
 
             /// TODO: support cancellation.
@@ -181,6 +182,11 @@ namespace Routing_Info_Viewer.Handler
 
             /// Start Finding...
             bwFind.RunWorkerAsync(db);
+        }
+
+        private void BwFind_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            Console.WriteLine("Loop: {0}", checkedTimes);
         }
 
         private void BwFind_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -211,6 +217,9 @@ namespace Routing_Info_Viewer.Handler
                 /// Remember last two stations so we assure only 1 route change in 1 station.
                 var lastStation = new Class线路里程();
                 var last2ndStation = new Class线路里程();
+
+                /// Reset checking counter.
+                checkedTimes = 0;
 
                 /// From partial routes, use BFS to get target.
                 while (sortedPartialRoutes.Count > 0)
@@ -346,7 +355,11 @@ namespace Routing_Info_Viewer.Handler
                         }
                     }
                     /// Sort the list by transfer number.
-                    sortedPartialRoutes.Sort((x, y) => (x.TransferedRouteNum - y.TransferedRouteNum));
+                    /// No need to sort each time, sort with low frequency.
+                    if (++checkedTimes % 100 == 0)
+                    {
+                        //sortedPartialRoutes.Sort((x, y) => (x.TransferedRouteNum - y.TransferedRouteNum));
+                    }
                 }
 
 
@@ -355,6 +368,7 @@ namespace Routing_Info_Viewer.Handler
                 Console.WriteLine("Loop exit since we examined all possible routes.");
             }
         }
-        
+
+        int checkedTimes = 0;
     }
 }
