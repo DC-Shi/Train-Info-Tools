@@ -216,7 +216,13 @@ namespace Routing_Info_Viewer.Handler
                 while (sortedPartialRoutes.Count > 0)
                 {
                     /// Timeout, return.
-                    if ((DateTime.UtcNow - startTime).TotalMinutes > Timeout) return;
+                    if ((DateTime.UtcNow - startTime).TotalMinutes > Timeout)
+                    {
+                        /// Output for debugging
+                        /// 
+                        Console.WriteLine("Timeout, function return.");
+                        return;
+                    }
 
                     /// Get the first partial route,
                     /// and removed from queue.
@@ -236,10 +242,16 @@ namespace Routing_Info_Viewer.Handler
                         (sender as BackgroundWorker).ReportProgress(100 * SortedPossibleRoutes.Count / MaxCount, copr);
                         //SortedPossibleRoutes.Add(copr);
                         //DebugPrint(copr);
+                        /// Output for debugging
+                        /// 
+                        Console.WriteLine("耗时{0} | {1}", (DateTime.UtcNow - startTime).TotalSeconds, copr);
 
                         /// Do not search if we have enough possible routes.
                         if (SortedPossibleRoutes.Count > MaxCount)
                         {
+                            /// Output for debugging
+                            /// 
+                            Console.WriteLine("SortedPossibleRoutes.Count > MaxCount, function return.");
                             return;
                         }
                         continue;
@@ -322,6 +334,11 @@ namespace Routing_Info_Viewer.Handler
                     /// Sort the list by transfer number.
                     sortedPartialRoutes.Sort((x, y) => (x.TransferedRouteNum - y.TransferedRouteNum));
                 }
+
+
+                /// Output for debugging
+                /// 
+                Console.WriteLine("Loop exit since we examined all possible routes.");
             }
         }
         
