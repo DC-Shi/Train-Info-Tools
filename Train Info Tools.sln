@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parse12306 CSharp", "Parse1
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Routing Info Viewer", "Routing Info Viewer\Routing Info Viewer.csproj", "{3EE3CDE4-BA42-4E49-A0C3-B60017EC24E4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unicode GB2312 Filename Converter", "Unicode GB2312 Filename Converter\Unicode GB2312 Filename Converter.csproj", "{085FEEFE-4570-45CC-BA84-E395403AF769}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,13 @@ Global
 		{3EE3CDE4-BA42-4E49-A0C3-B60017EC24E4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3EE3CDE4-BA42-4E49-A0C3-B60017EC24E4}.Release|x86.ActiveCfg = Release|Any CPU
 		{3EE3CDE4-BA42-4E49-A0C3-B60017EC24E4}.Release|x86.Build.0 = Release|Any CPU
+		{085FEEFE-4570-45CC-BA84-E395403AF769}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{085FEEFE-4570-45CC-BA84-E395403AF769}.Debug|Any CPU.Build.0 = Debug|x86
+		{085FEEFE-4570-45CC-BA84-E395403AF769}.Debug|x86.ActiveCfg = Debug|x86
+		{085FEEFE-4570-45CC-BA84-E395403AF769}.Debug|x86.Build.0 = Debug|x86
+		{085FEEFE-4570-45CC-BA84-E395403AF769}.Release|Any CPU.ActiveCfg = Release|x86
+		{085FEEFE-4570-45CC-BA84-E395403AF769}.Release|x86.ActiveCfg = Release|x86
+		{085FEEFE-4570-45CC-BA84-E395403AF769}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
