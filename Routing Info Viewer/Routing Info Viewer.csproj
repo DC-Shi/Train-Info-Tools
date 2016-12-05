@@ -67,16 +67,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Handler\ClassMultipleRoutes.cs" />
-    <Compile Include="Handler\ClassDatabase.cs" />
     <Compile Include="Handler\ClassOnePossibleRouteReturnStatus.cs" />
     <Compile Include="Handler\ClassOnePossibleRoute.cs" />
     <Compile Include="layout class\ClassIntervalInfo.cs" />
     <Compile Include="layout class\ClassRouteNumberConverter.cs" />
     <Compile Include="layout class\ClassSimplifyRoutingConverter.cs" />
     <Compile Include="layout class\ClassRoutingTemplateSelector.cs" />
-    <Compile Include="Handler\Database\Class线路里程.cs" />
-    <Compile Include="Handler\Database\Class线路名.cs" />
-    <Compile Include="Handler\Database\Class站名.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -113,7 +109,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\客里表Library\客里表Library.csproj">
+      <Project>{bf90731d-76e3-485f-86a4-dde69fa43c85}</Project>
+      <Name>客里表Library</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
