@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace 客里表Library.Database
 {
-    class Class线路里程
+    public class Class线路里程
     {
         #region Properties
 

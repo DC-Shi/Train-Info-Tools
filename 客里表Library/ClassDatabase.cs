@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace 客里表Library
 {
-    class ClassDatabase
+    public class ClassDatabase
     {
         #region Private members
 

@@ -10,7 +10,7 @@ namespace 客里表Library.Database
     /// <summary>
     /// 单个车站信息
     /// </summary>
-    class Class站名
+    public class Class站名
     {
         #region Properties
 
