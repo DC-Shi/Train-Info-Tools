@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Routing Info Viewer", "Rout
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unicode GB2312 Filename Converter", "Unicode GB2312 Filename Converter\Unicode GB2312 Filename Converter.csproj", "{085FEEFE-4570-45CC-BA84-E395403AF769}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "客里表Library", "客里表Library\客里表Library.csproj", "{BF90731D-76E3-485F-86A4-DDE69FA43C85}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,14 @@ Global
 		{085FEEFE-4570-45CC-BA84-E395403AF769}.Release|Any CPU.ActiveCfg = Release|x86
 		{085FEEFE-4570-45CC-BA84-E395403AF769}.Release|x86.ActiveCfg = Release|x86
 		{085FEEFE-4570-45CC-BA84-E395403AF769}.Release|x86.Build.0 = Release|x86
+		{BF90731D-76E3-485F-86A4-DDE69FA43C85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF90731D-76E3-485F-86A4-DDE69FA43C85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF90731D-76E3-485F-86A4-DDE69FA43C85}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BF90731D-76E3-485F-86A4-DDE69FA43C85}.Debug|x86.Build.0 = Debug|Any CPU
+		{BF90731D-76E3-485F-86A4-DDE69FA43C85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF90731D-76E3-485F-86A4-DDE69FA43C85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF90731D-76E3-485F-86A4-DDE69FA43C85}.Release|x86.ActiveCfg = Release|Any CPU
+		{BF90731D-76E3-485F-86A4-DDE69FA43C85}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
