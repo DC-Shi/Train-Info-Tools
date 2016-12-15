@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:Routing_Info_Viewer"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="经由查询" Height="459.065" Width="600" MinWidth="600" MinHeight="300">
+        Title="经由查询" Height="459.065" Width="600" MinWidth="600" MinHeight="300" Icon="icon.png">
+    <!-- &#x1F689; -->
     <Window.Resources>
         <local:ClassRouteNumberConverter x:Key="ClassRouteNumberConverter"/>
         <local:ClassSimplifyRoutingConverter x:Key="SimplifyRoutingConverter"/>
