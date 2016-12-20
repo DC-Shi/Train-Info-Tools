@@ -359,7 +359,7 @@ namespace Routing_Info_Viewer.Handler
                     /// No need to sort each time, sort with low frequency.
                     if (++checkedTimes % 100 == 0)
                     {
-                        //sortedPartialRoutes.Sort((x, y) => (x.TransferedRouteNum - y.TransferedRouteNum));
+                        sortedPartialRoutes.Sort((x, y) => (x.TransferedRouteNum - y.TransferedRouteNum));
                     }
                 }
 
