@@ -150,7 +150,13 @@ namespace 客里表WPF版
                                 {
                                     listViewTable.Focus();
                                     listViewTable.ScrollIntoView(listViewTable.Items[i]);
-                                    listViewTable.SelectedIndex = i;
+                                    //listViewTable.SelectedIndex = i;
+
+                                    /// http://stackoverflow.com/questions/7363777/arrow-keys-dont-work-after-programmatically-setting-listview-selecteditem/7364949#7364949
+                                    this.listViewTable.ItemContainerGenerator.StatusChanged += icg_StatusChanged;
+                                    this.listViewTable.SelectedItem = listViewTable.Items[i];
+                                    current = listViewTable.Items[i] as Class线路里程;
+
                                     break;
                                 }
                             }
@@ -161,6 +167,28 @@ namespace 客里表WPF版
                 {
                     Console.WriteLine("目标为空，找不到线路名{0}", (listBox线路列表.SelectedItem as Class线路名).线路名);
                 }
+            }
+        }
+
+        Class线路里程 current;
+        /// <summary>
+        /// http://stackoverflow.com/questions/7363777/arrow-keys-dont-work-after-programmatically-setting-listview-selecteditem/7364949#7364949
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void icg_StatusChanged(object sender, EventArgs e)
+        {
+            if (this.listViewTable.ItemContainerGenerator.Status
+                == System.Windows.Controls.Primitives.GeneratorStatus.ContainersGenerated)
+            {
+                this.listViewTable.ItemContainerGenerator.StatusChanged
+                    -= icg_StatusChanged;
+                Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Input,
+                                       new Action(() => {
+                                           var uielt = (UIElement)this.listViewTable.ItemContainerGenerator.ContainerFromItem(current);
+                                           uielt.Focus();
+                                       }));
+
             }
         }
 
