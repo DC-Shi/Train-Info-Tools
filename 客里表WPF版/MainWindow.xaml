@@ -1,11 +1,15 @@
-﻿<Window x:Class="客里表WPF版.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:客里表WPF版"
+        xmlns:Converter="clr-namespace:客里表WPF版.Converter" x:Class="客里表WPF版.MainWindow"
         mc:Ignorable="d"
         Title="客里表WPF版" Height="350" Width="525">
+    <Window.Resources>
+        <Converter:Class限制文本Converter x:Key="Class限制文本Converter"/>
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="191*"/>
@@ -16,42 +20,49 @@
             <RowDefinition Height="24"/>
         </Grid.RowDefinitions>
         <DockPanel Margin="10">
-        <TextBox x:Name="textBox输入框" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="textBox输入框_TextChanged" KeyDown="textBox输入框_KeyDown" DockPanel.Dock="Top">
-            <!-- http://www.cnblogs.com/tsunami/archive/2011/09/16/2179170.html -->
-            <TextBox.Resources>
-                <VisualBrush x:Key="HelpBrush" TileMode="None" Opacity="0.3" Stretch="None" AlignmentX="Left">
-                    <VisualBrush.Visual>
-                        <TextBlock FontStyle="Italic" Text="请输入车站名或线路名"/>
-                    </VisualBrush.Visual>
-                </VisualBrush>
-            </TextBox.Resources>
-            <TextBox.Style>
-                <Style TargetType="TextBox">
-                    <Style.Triggers>
-                        <Trigger Property="Text" Value="{x:Null}">
-                            <Setter Property="Background" Value="{StaticResource HelpBrush}"/>
-                        </Trigger>
-                        <Trigger Property="Text" Value="">
-                            <Setter Property="Background" Value="{StaticResource HelpBrush}"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </TextBox.Style>
+            <TextBox x:Name="textBox输入框" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="textBox输入框_TextChanged" KeyDown="textBox输入框_KeyDown" DockPanel.Dock="Top">
+                <!-- http://www.cnblogs.com/tsunami/archive/2011/09/16/2179170.html -->
+                <TextBox.Resources>
+                    <VisualBrush x:Key="HelpBrush" TileMode="None" Opacity="0.3" Stretch="None" AlignmentX="Left">
+                        <VisualBrush.Visual>
+                            <TextBlock FontStyle="Italic" Text="请输入车站名或线路名"/>
+                        </VisualBrush.Visual>
+                    </VisualBrush>
+                </TextBox.Resources>
+                <TextBox.Style>
+                    <Style TargetType="{x:Type TextBox}">
+                        <Style.Triggers>
+                            <Trigger Property="Text" Value="{x:Null}">
+                                <Setter Property="Background" Value="{StaticResource HelpBrush}"/>
+                            </Trigger>
+                            <Trigger Property="Text" Value="">
+                                <Setter Property="Background" Value="{StaticResource HelpBrush}"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
 
-        </TextBox>
+            </TextBox>
 
-        <ListBox x:Name="listBox线路列表" KeyDown="listBox线路列表_KeyDown"  VerticalAlignment="Bottom" DockPanel.Dock="Bottom" MinHeight="30" MaxHeight="200">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding 线路名}"/>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-        <ListBox x:Name="listBox车站列表" KeyDown="listBox车站列表_KeyDown" Margin="0,10"/>
+            <ListBox x:Name="listBox线路列表" KeyDown="listBox线路列表_KeyDown"  VerticalAlignment="Bottom" DockPanel.Dock="Bottom" MinHeight="30" MaxHeight="200">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding 线路名}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <ListBox x:Name="listBox车站列表" KeyDown="listBox车站列表_KeyDown" Margin="0,10"/>
         </DockPanel>
         <ListView x:Name="listViewTable" Margin="10" Grid.Column="1" KeyDown="listViewTable_KeyDown">
             <ListView.View>
                 <GridView>
+                    <GridViewColumn Header="限制">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding 站名, ConverterParameter={RelativeSource Mode=FindAncestor, AncestorType=Window}, Converter={StaticResource Class限制文本Converter}}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                     <GridViewColumn Header="站名">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
