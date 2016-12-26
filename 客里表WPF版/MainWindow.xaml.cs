@@ -134,33 +134,38 @@ namespace 客里表WPF版
         {
             if (e.Key == Key.Enter)
             {
+                /// 先找当前选择的线路所包含的站点
                 var selectedRoute = classDB.ListRouteMileage.Where(x => x.线路名.Equals((listBox线路列表.SelectedItem as Class线路名).线路名));
                 if (selectedRoute.Count() > 0)
                 {
+                    /// 找到之后进行绑定
                     listViewTable.ItemsSource = selectedRoute;
 
                     var czm = listBox车站列表.SelectedItem as Class站名;
                     if (czm != null)
                     {
-                        for (int i = 0; i < listViewTable.Items.Count; i++)
+                        int i = 0;
+                        for (i = 0; i < listViewTable.Items.Count; i++)
                         {
                             if (listViewTable.Items[i] is Class线路里程)
                             {
+                                /// 然后查找与所选内容一致的站点
                                 if ((listViewTable.Items[i] as Class线路里程).站名 == czm.站名)
                                 {
-                                    listViewTable.Focus();
-                                    listViewTable.ScrollIntoView(listViewTable.Items[i]);
-                                    //listViewTable.SelectedIndex = i;
-
-                                    /// http://stackoverflow.com/questions/7363777/arrow-keys-dont-work-after-programmatically-setting-listview-selecteditem/7364949#7364949
-                                    this.listViewTable.ItemContainerGenerator.StatusChanged += icg_StatusChanged;
-                                    this.listViewTable.SelectedItem = listViewTable.Items[i];
-                                    current = listViewTable.Items[i] as Class线路里程;
-
                                     break;
                                 }
                             }
                         }
+                        /// 如果没找到，那就默认第一个
+                        if (i >= listViewTable.Items.Count) i = 0;
+
+                        listViewTable.Focus();
+                        listViewTable.ScrollIntoView(listViewTable.Items[i]);
+
+                        /// http://stackoverflow.com/questions/7363777/arrow-keys-dont-work-after-programmatically-setting-listview-selecteditem/7364949#7364949
+                        this.listViewTable.ItemContainerGenerator.StatusChanged += icg_StatusChanged;
+                        this.listViewTable.SelectedItem = listViewTable.Items[i];
+                        current = listViewTable.Items[i] as Class线路里程;
                     }
                 }
                 else
