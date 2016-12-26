@@ -287,6 +287,40 @@ namespace Routing_Info_Viewer.Handler
                     { }//NormalPrint("Cannot find " + lastStation.ToString());
                     else
                     {
+                        /*
+                        /// If the last station of current checking route is not the first one on sameRoute,
+                        /// add to checking list.
+                        /// 
+                        /// Added a loop to check all stations in current route
+                        /// only add the stations that have multiple routes if it is not the end station
+                        for (int numOfStations = 1; numOfStations <= idxOfLastStation; numOfStations++)
+                        {
+                            if ((idxOfLastStation > 0) && !allNextStations.Contains(sameRoute[idxOfLastStation - numOfStations]))
+                                /// Do not add duplicate station.
+                                if (!copr.Stations.Contains(sameRoute[idxOfLastStation - numOfStations]))
+                                {
+                                    if (db.ListRouteMileage.Where(x => x.站名 == sameRoute[idxOfLastStation - numOfStations].站名).Count() > 1
+                                        || sameRoute[idxOfLastStation - numOfStations].站名 == EndStation)
+                                        allNextStations.Add(sameRoute[idxOfLastStation - numOfStations]);
+                                }
+                        }
+                        /// If the last station of current checking route is not the last one on sameRoute,
+                        /// add to checking list.
+                        /// 
+                        /// Added a loop to check all stations in current route
+                        /// only add the stations that have multiple routes if it is not the end station
+                        for (int numOfStations = 1; idxOfLastStation + numOfStations <= sameRoute.Count - 1; numOfStations++)
+                        {
+                            if ((idxOfLastStation < sameRoute.Count - 1) && !allNextStations.Contains(sameRoute[idxOfLastStation + numOfStations]))
+                                /// Do not add duplicate station.
+                                if (!copr.Stations.Contains(sameRoute[idxOfLastStation + numOfStations]))
+                                {
+                                    if (db.ListRouteMileage.Where(x => x.站名 == sameRoute[idxOfLastStation + numOfStations].站名).Count() > 1
+                                        || sameRoute[idxOfLastStation + numOfStations].站名 == EndStation)
+                                        allNextStations.Add(sameRoute[idxOfLastStation + numOfStations]);
+                                }
+                        }
+                        */
                         /// If the last station of current checking route is not the first one on sameRoute,
                         /// add to checking list.
                         if ((idxOfLastStation > 0) && !allNextStations.Contains(sameRoute[idxOfLastStation - 1]))
@@ -359,7 +393,8 @@ namespace Routing_Info_Viewer.Handler
                     /// No need to sort each time, sort with low frequency.
                     if (++checkedTimes % 100 == 0)
                     {
-                        sortedPartialRoutes.Sort((x, y) => (x.TransferedRouteNum - y.TransferedRouteNum));
+                        sortedPartialRoutes.Sort((x, y) =>
+                        (x.TransferedRouteNum - y.TransferedRouteNum) == 0 ? (int)(x.Length - y.Length) : (x.TransferedRouteNum - y.TransferedRouteNum));
                     }
                 }
 
