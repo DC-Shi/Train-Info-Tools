@@ -67,7 +67,11 @@
                     <GridViewColumn Header="限制">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding 站名, ConverterParameter={RelativeSource Mode=FindAncestor, AncestorType=Window}, Converter={StaticResource Class限制文本Converter}}"></TextBlock>
+                                <TextBlock Text="{Binding 站名, Converter={StaticResource Class限制文本Converter}}">
+                                    <TextBlock.ToolTip>
+                                        <TextBlock Text="{Binding 站名, ConverterParameter=ToolTip, Converter={StaticResource Class限制文本Converter}}"/>
+                                    </TextBlock.ToolTip>
+                                </TextBlock>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
