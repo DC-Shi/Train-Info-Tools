@@ -61,7 +61,7 @@
             </ListBox>
             <ListBox x:Name="listBox车站列表" KeyDown="listBox车站列表_KeyDown" Margin="0,10"/>
         </DockPanel>
-        <ListView x:Name="listViewTable" Margin="10" Grid.Column="1" KeyDown="listViewTable_KeyDown">
+        <ListView x:Name="listViewTable" Margin="10,47,10,10" Grid.Column="1" KeyDown="listViewTable_KeyDown">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="限制">
@@ -75,7 +75,8 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="站名" Width="120"> <!-- 站名最多5个字，用固定尺寸 -->
+                    <GridViewColumn Header="站名" Width="120">
+                        <!-- 站名最多5个字，用固定尺寸 -->
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding 站名}"/>
@@ -96,5 +97,28 @@
         <StatusBar Grid.Row="1" Grid.ColumnSpan="2">
             <TextBlock x:Name="textBlockStatus" TextWrapping="Wrap" Text="Status"/>
         </StatusBar>
+        <TextBox x:Name="textBox线路名称" Height="27" TextWrapping="Wrap" VerticalAlignment="Top" Margin="10,10,0,0" Grid.Column="1" HorizontalAlignment="Left" Width="171">
+            <!-- http://www.cnblogs.com/tsunami/archive/2011/09/16/2179170.html -->
+            <TextBox.Resources>
+                <VisualBrush x:Key="HelpBrush" TileMode="None" Opacity="0.3" Stretch="None" AlignmentX="Left">
+                    <VisualBrush.Visual>
+                        <TextBlock FontStyle="Italic" Text="线路名称"/>
+                    </VisualBrush.Visual>
+                </VisualBrush>
+            </TextBox.Resources>
+            <TextBox.Style>
+                <Style TargetType="{x:Type TextBox}">
+                    <Style.Triggers>
+                        <Trigger Property="Text" Value="{x:Null}">
+                            <Setter Property="Background" Value="{StaticResource HelpBrush}"/>
+                        </Trigger>
+                        <Trigger Property="Text" Value="">
+                            <Setter Property="Background" Value="{StaticResource HelpBrush}"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBox.Style>
+
+        </TextBox>
     </Grid>
 </Window>

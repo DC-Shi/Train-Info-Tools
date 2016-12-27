@@ -178,6 +178,9 @@ namespace 客里表WPF版
                         /// 如果没找到，那就默认第一个
                         if (i >= listViewTable.Items.Count) i = 0;
 
+                        /// 设置线路名称
+                        textBox线路名称.Text = (listViewTable.Items[i] as Class线路里程).线路名;
+
                         listViewTable.Focus();
                         listViewTable.ScrollIntoView(listViewTable.Items[i]);
 
