@@ -6,10 +6,18 @@
         xmlns:local="clr-namespace:客里表WPF版"
         xmlns:Converter="clr-namespace:客里表WPF版.Converter" x:Class="客里表WPF版.MainWindow"
         mc:Ignorable="d"
-        Title="客里表WPF版" Height="350" Width="525" FontWeight="Bold" FontSize="21.333" FontFamily="SimHei">
+        Title="客里表WPF版" Height="350" Width="525" FontWeight="Bold" FontSize="21.333" FontFamily="SimHei" WindowState="Maximized">
     <Window.Resources>
         <Converter:Class限制文本Converter x:Key="Class限制文本Converter"/>
+        <RoutedUICommand x:Key="cmdFocusF3"/>
     </Window.Resources>
+    <!-- http://stackoverflow.com/questions/3386206/wpf-assign-f-keys-to-buttons -->
+    <Window.CommandBindings>
+        <CommandBinding Command="{StaticResource cmdFocusF3}" Executed="FocusF3"></CommandBinding>
+    </Window.CommandBindings>
+    <Window.InputBindings>
+        <KeyBinding Key="F3" Command="{StaticResource cmdFocusF3}"/>
+    </Window.InputBindings>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="191*"/>

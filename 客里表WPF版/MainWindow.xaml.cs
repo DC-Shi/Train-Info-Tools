@@ -30,6 +30,20 @@ namespace 客里表WPF版
 
             listBox线路列表.ItemsSource = classDB.ListRouteName;
             listBox车站列表.ItemsSource = classDB.ListStationName;
+
+            FocusF3(this, null);
+        }
+
+        /// <summary>
+        /// http://stackoverflow.com/questions/3386206/wpf-assign-f-keys-to-buttons
+        /// Focus the textbox when F3 pressed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void FocusF3(object sender, RoutedEventArgs e)
+        {
+            textBox输入框.Focus();
+            textBox输入框.SelectAll();
         }
 
         ClassDatabase classDB = null;
@@ -89,6 +103,11 @@ namespace 客里表WPF版
                 {
                     listBox车站列表.Focus();
                     listBox车站列表.SelectedIndex = 0;
+                }
+                /// 如果当前只有一个结果，那么自动移到线路选择当中
+                if (listBox车站列表.Items.Count ==1)
+                {
+                    listBox线路列表_KeyDown(sender, e);
                 }
             }
         }
@@ -205,7 +224,7 @@ namespace 客里表WPF版
                 if (selectedClass线路里程 != null)
                 {
                     textBox输入框.Text = selectedClass线路里程.站名;
-                    textBox输入框_KeyDown(sender, e);
+                    FocusF3(sender, e);
                 }
             }
         }
