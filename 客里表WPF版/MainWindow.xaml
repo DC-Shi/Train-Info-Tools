@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="客里表WPF版" Height="350" Width="525" FontWeight="Bold" FontSize="21.333" FontFamily="SimHei" WindowState="Maximized">
     <Window.Resources>
-        <Converter:Class限制文本Converter x:Key="Class限制文本Converter"/>
+        <Converter:Class站名属性Converter x:Key="Class站名属性Converter"/>
         <RoutedUICommand x:Key="cmdFocusF3"/>
     </Window.Resources>
     <!-- http://stackoverflow.com/questions/3386206/wpf-assign-f-keys-to-buttons -->
@@ -67,15 +67,15 @@
                     <GridViewColumn Header="限制">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding 站名, Converter={StaticResource Class限制文本Converter}}">
+                                <TextBlock Text="{Binding 站名, ConverterParameter=限制, Converter={StaticResource Class站名属性Converter}}">
                                     <TextBlock.ToolTip>
-                                        <TextBlock Text="{Binding 站名, ConverterParameter=ToolTip, Converter={StaticResource Class限制文本Converter}}"/>
+                                        <TextBlock Text="{Binding 站名, ConverterParameter=限制ToolTip, Converter={StaticResource Class站名属性Converter}}"/>
                                     </TextBlock.ToolTip>
                                 </TextBlock>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="站名">
+                    <GridViewColumn Header="站名" Width="120"> <!-- 站名最多5个字，用固定尺寸 -->
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding 站名}"/>
