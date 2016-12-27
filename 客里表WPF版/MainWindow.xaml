@@ -67,9 +67,9 @@
                     <GridViewColumn Header="限制">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding 站名, ConverterParameter=限制, Converter={StaticResource Class站名属性Converter}}">
+                                <TextBlock Text="{Binding ., ConverterParameter=限制, Converter={StaticResource Class站名属性Converter}}">
                                     <TextBlock.ToolTip>
-                                        <TextBlock Text="{Binding 站名, ConverterParameter=限制ToolTip, Converter={StaticResource Class站名属性Converter}}"/>
+                                        <TextBlock Text="{Binding ., ConverterParameter=限制ToolTip, Converter={StaticResource Class站名属性Converter}}"/>
                                     </TextBlock.ToolTip>
                                 </TextBlock>
                             </DataTemplate>

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Data;
 using 客里表Library;
+using 客里表Library.Database;
 
 namespace 客里表WPF版.Converter
 {
@@ -21,7 +22,7 @@ namespace 客里表WPF版.Converter
         public object Convert(object stationName, Type typeTarget,
                               object param, CultureInfo culture)
         {
-            var findStation = classDB.ListStationName.Where(x => x.站名.Equals(stationName));
+            var findStation = classDB.ListStationName.Where(x => x.站名.Equals((stationName as Class线路里程)?.站名));
             if (findStation.Count() > 0)
             {
                 /// Station found, show the first one.
