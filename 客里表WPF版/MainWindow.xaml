@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:客里表WPF版"
         xmlns:Converter="clr-namespace:客里表WPF版.Converter" x:Class="客里表WPF版.MainWindow"
         mc:Ignorable="d"
-        Title="客里表WPF版" Height="350" Width="525">
+        Title="客里表WPF版" Height="350" Width="525" FontWeight="Bold" FontSize="21.333" FontFamily="SimHei">
     <Window.Resources>
         <Converter:Class限制文本Converter x:Key="Class限制文本Converter"/>
     </Window.Resources>
@@ -20,7 +20,7 @@
             <RowDefinition Height="24"/>
         </Grid.RowDefinitions>
         <DockPanel Margin="10">
-            <TextBox x:Name="textBox输入框" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="textBox输入框_TextChanged" KeyDown="textBox输入框_KeyDown" DockPanel.Dock="Top">
+            <TextBox x:Name="textBox输入框" Height="27" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="textBox输入框_TextChanged" KeyDown="textBox输入框_KeyDown" DockPanel.Dock="Top">
                 <!-- http://www.cnblogs.com/tsunami/archive/2011/09/16/2179170.html -->
                 <TextBox.Resources>
                     <VisualBrush x:Key="HelpBrush" TileMode="None" Opacity="0.3" Stretch="None" AlignmentX="Left">
