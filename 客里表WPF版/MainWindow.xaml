@@ -25,7 +25,7 @@
                 <TextBox.Resources>
                     <VisualBrush x:Key="HelpBrush" TileMode="None" Opacity="0.3" Stretch="None" AlignmentX="Left">
                         <VisualBrush.Visual>
-                            <TextBlock FontStyle="Italic" Text="请输入车站名或线路名"/>
+                            <TextBlock FontStyle="Italic" Text="请输入车站名"/>
                         </VisualBrush.Visual>
                     </VisualBrush>
                 </TextBox.Resources>
@@ -44,7 +44,7 @@
 
             </TextBox>
 
-            <ListBox x:Name="listBox线路列表" KeyDown="listBox线路列表_KeyDown"  VerticalAlignment="Bottom" DockPanel.Dock="Bottom" MinHeight="30" MaxHeight="200">
+            <ListBox x:Name="listBox线路列表" KeyDown="listBox线路列表_KeyDown"  VerticalAlignment="Bottom" DockPanel.Dock="Bottom" MinHeight="30" MaxHeight="100">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding 线路名}"/>
@@ -59,7 +59,7 @@
                     <GridViewColumn Header="限制">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding 站名, ConverterParameter={RelativeSource Mode=FindAncestor, AncestorType=Window}, Converter={StaticResource Class限制文本Converter}}"/>
+                                <TextBlock Text="{Binding 站名, ConverterParameter={RelativeSource Mode=FindAncestor, AncestorType=Window}, Converter={StaticResource Class限制文本Converter}}"></TextBlock>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
