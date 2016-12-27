@@ -105,9 +105,9 @@ namespace 客里表WPF版
                     listBox车站列表.SelectedIndex = 0;
                 }
                 /// 如果当前只有一个结果，那么自动移到线路选择当中
-                if (listBox车站列表.Items.Count ==1)
+                if (listBox车站列表.Items.Count == 1)
                 {
-                    listBox线路列表_KeyDown(sender, e);
+                    listBox车站列表_KeyDown(sender, e);
                 }
             }
         }
@@ -154,7 +154,7 @@ namespace 客里表WPF版
             if (e.Key == Key.Enter)
             {
                 /// 先找当前选择的线路所包含的站点
-                var selectedRoute = classDB.ListRouteMileage.Where(x => x.线路名.Equals((listBox线路列表.SelectedItem as Class线路名).线路名));
+                var selectedRoute = classDB.ListRouteMileage.Where(x => x.线路名.Equals((listBox线路列表.SelectedItem as Class线路名)?.线路名));
                 if (selectedRoute.Count() > 0)
                 {
                     /// 找到之后进行绑定
@@ -189,7 +189,7 @@ namespace 客里表WPF版
                 }
                 else
                 {
-                    Console.WriteLine("目标为空，找不到线路名{0}", (listBox线路列表.SelectedItem as Class线路名).线路名);
+                    Console.WriteLine("目标为空，找不到线路名{0}", (listBox线路列表.SelectedItem as Class线路名)?.线路名);
                 }
             }
         }
