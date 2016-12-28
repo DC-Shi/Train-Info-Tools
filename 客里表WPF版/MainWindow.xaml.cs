@@ -25,7 +25,7 @@ namespace 客里表WPF版
         /// <summary>
         /// 数据库的ViewModel
         /// </summary>
-        ViewModel vm = null;
+        ViewModel客里表数据 vm = null;
 
         /// <summary>
         /// 构造函数，初始化可视化组件，初始化数据库ViewModel
@@ -33,7 +33,7 @@ namespace 客里表WPF版
         public MainWindow()
         {
             InitializeComponent();
-            vm = new ViewModel();
+            vm = new ViewModel客里表数据();
             this.DataContext = vm;
             textBlockStatus.Text += ("Database loaded.");
             

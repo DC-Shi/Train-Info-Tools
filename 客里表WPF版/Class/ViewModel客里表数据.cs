@@ -7,7 +7,7 @@ using 客里表Library.Database;
 
 namespace 客里表WPF版.Class
 {
-    class ViewModel
+    class ViewModel客里表数据
     {
         #region Properties
 
@@ -48,7 +48,7 @@ namespace 客里表WPF版.Class
         /// <summary>
         /// 构造函数，初始化数据库，并给站名添加附加信息
         /// </summary>
-        public ViewModel()
+        public ViewModel客里表数据()
         {
             classDB = new ClassDatabase("data.mdb");
             for(int i = 0; i < classDB.ListStationName.Count; i++)

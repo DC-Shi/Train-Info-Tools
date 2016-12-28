@@ -12,7 +12,7 @@ namespace 客里表WPF版.Converter
 {
     class Class站名属性Converter : IValueConverter
     {
-        static ViewModel classVM = new ViewModel();
+        static ViewModel客里表数据 classVM = new ViewModel客里表数据();
         /// <summary>
         /// 把路名转换为本站其他属性的Text
         /// </summary>

@@ -80,7 +80,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Class\Class站名加.cs" />
-    <Compile Include="Class\ViewModel.cs" />
+    <Compile Include="Class\ViewModel客里表数据.cs" />
     <Compile Include="Converter\Class站名属性Converter.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
