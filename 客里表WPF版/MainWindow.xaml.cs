@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using 客里表Library;
 using 客里表Library.Database;
+using 客里表WPF版.Class;
 
 namespace 客里表WPF版
 {
@@ -21,15 +22,17 @@ namespace 客里表WPF版
     /// </summary>
     public partial class MainWindow : Window
     {
+        ViewModel vm = null;
         public MainWindow()
         {
             InitializeComponent();
-            classDB = new ClassDatabase("data.mdb");
+            vm = new ViewModel();
+            this.DataContext = vm;
             textBlockStatus.Text += ("Database loaded.");
 
 
-            listBox线路列表.ItemsSource = classDB.ListRouteName;
-            listBox车站列表.ItemsSource = classDB.ListStationName;
+            //listBox线路列表.ItemsSource = classDB.ListRouteName;
+            //listBox车站列表.ItemsSource = classDB.ListStationName;
 
             FocusF3(this, null);
         }
@@ -46,7 +49,7 @@ namespace 客里表WPF版
             textBox输入框.SelectAll();
         }
 
-        ClassDatabase classDB = null;
+        //ClassDatabase classDB = null;
 
         private void textBox输入框_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -60,6 +63,9 @@ namespace 客里表WPF版
             /// 
             var view = CollectionViewSource.GetDefaultView(listBox车站列表.ItemsSource);
             var inputText = textBox输入框.Text.ToUpper();
+
+            /// view might be null if no item presented.
+            if (view == null) return;
 
             view.Filter = x =>
             {
@@ -120,13 +126,15 @@ namespace 客里表WPF版
                 /// 
                 var view = CollectionViewSource.GetDefaultView(listBox线路列表.ItemsSource);
 
+                /// view might be null if no item presented.
+                if (view == null) return;
 
                 view.Filter = x =>
                 {
                     var cxlm = x as Class线路名;
                     var ccz = listBox车站列表.SelectedItem as Class站名;
                     if (cxlm == null || ccz == null) return false;
-                    if (classDB.ListRouteMileage.Where(t => t.线路名 == cxlm.线路名 && t.站名 == ccz.站名).Count() > 0)
+                    if (vm.classDB.ListRouteMileage.Where(t => t.线路名 == cxlm.线路名 && t.站名 == ccz.站名).Count() > 0)
                         return true;
                     return false;
                 };
@@ -154,7 +162,7 @@ namespace 客里表WPF版
             if (e.Key == Key.Enter)
             {
                 /// 先找当前选择的线路所包含的站点
-                var selectedRoute = classDB.ListRouteMileage.Where(x => x.线路名.Equals((listBox线路列表.SelectedItem as Class线路名)?.线路名));
+                var selectedRoute = vm.classDB.ListRouteMileage.Where(x => x.线路名.Equals((listBox线路列表.SelectedItem as Class线路名)?.线路名));
                 if (selectedRoute.Count() > 0)
                 {
                     /// 找到之后进行绑定
