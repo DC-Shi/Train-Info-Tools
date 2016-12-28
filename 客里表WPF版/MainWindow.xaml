@@ -94,14 +94,7 @@
                     </GridViewColumn>
                     <GridViewColumn>
                         <GridViewColumn.Header>
-                            <TextBlock>
-                                <TextBlock.Text>
-                                    <MultiBinding StringFormat="{}{0}{1}">
-                                        <Binding TargetNullValue="自"/>
-                                        <Binding Path="SelectedItem.站名" ElementName="listBox车站列表"/>
-                                    </MultiBinding>
-                                </TextBlock.Text>
-                            </TextBlock>
+                            <TextBlock Text="{Binding SelectedItem.站名, ElementName=listBox车站列表, StringFormat={}自{0}}"/>
                         </GridViewColumn.Header>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
