@@ -75,6 +75,8 @@ namespace 客里表WPF版.Converter
                     case "接续线路":
                         var count = first.所属路线.Count();
                         return count > 1 ? count.ToString() : string.Empty;
+                    case "高速动车限制":
+                        return first.是否允许办理G车 ? "G可通过此处" : string.Empty;
                 }
                 
             }

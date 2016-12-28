@@ -17,6 +17,8 @@ namespace 客里表WPF版.Class
         /// 车站所属路线
         /// </summary>
         public IEnumerable<Class线路里程> 所属路线 { get; set; }
+
+        public bool 是否允许办理G车 { get; set; }
         
         #endregion
 
@@ -53,6 +55,7 @@ namespace 客里表WPF版.Class
         public Class站名加(Class站名 cz, List<Class线路里程> cxllc) : this(cz)
         {
             所属路线 = cxllc.Where(x => x.站名 == 站名);
+            是否允许办理G车 = 营业办理限制.Contains("G");
         }
         #endregion
     }
