@@ -134,7 +134,7 @@ namespace 客里表WPF版
                     var cxlm = x as Class线路名;
                     var ccz = listBox车站列表.SelectedItem as Class站名;
                     if (cxlm == null || ccz == null) return false;
-                    if (vm.classDB.ListRouteMileage.Where(t => t.线路名 == cxlm.线路名 && t.站名 == ccz.站名).Count() > 0)
+                    if (vm.所有线路里程.Where(t => t.线路名 == cxlm.线路名 && t.站名 == ccz.站名).Count() > 0)
                         return true;
                     return false;
                 };
@@ -162,7 +162,7 @@ namespace 客里表WPF版
             if (e.Key == Key.Enter)
             {
                 /// 先找当前选择的线路所包含的站点
-                var selectedRoute = vm.classDB.ListRouteMileage.Where(x => x.线路名.Equals((listBox线路列表.SelectedItem as Class线路名)?.线路名));
+                var selectedRoute = vm.所有线路里程.Where(x => x.线路名.Equals((listBox线路列表.SelectedItem as Class线路名)?.线路名));
                 if (selectedRoute.Count() > 0)
                 {
                     /// 找到之后进行绑定
