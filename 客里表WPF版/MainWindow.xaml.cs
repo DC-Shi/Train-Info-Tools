@@ -169,9 +169,11 @@ namespace 客里表WPF版
                     listViewTable.ItemsSource = selectedRoute;
 
                     var czm = listBox车站列表.SelectedItem as Class站名;
+
+                    /// Fix bug that no station selected
+                    int i = 0;
                     if (czm != null)
                     {
-                        int i = 0;
                         for (i = 0; i < listViewTable.Items.Count; i++)
                         {
                             if (listViewTable.Items[i] is Class线路里程)
@@ -186,17 +188,18 @@ namespace 客里表WPF版
                         /// 如果没找到，那就默认第一个
                         if (i >= listViewTable.Items.Count) i = 0;
 
-                        /// 设置线路名称
-                        textBox线路名称.Text = (listViewTable.Items[i] as Class线路里程).线路名;
-
-                        listViewTable.Focus();
-                        listViewTable.ScrollIntoView(listViewTable.Items[i]);
-
-                        /// http://stackoverflow.com/questions/7363777/arrow-keys-dont-work-after-programmatically-setting-listview-selecteditem/7364949#7364949
-                        this.listViewTable.ItemContainerGenerator.StatusChanged += icg_StatusChanged;
-                        this.listViewTable.SelectedItem = listViewTable.Items[i];
-                        current = listViewTable.Items[i] as Class线路里程;
                     }
+                    /// 设置线路名称
+                    textBox线路名称.Text = (listViewTable.Items[i] as Class线路里程).线路名;
+
+                    listViewTable.Focus();
+                    listViewTable.ScrollIntoView(listViewTable.Items[i]);
+
+                    /// http://stackoverflow.com/questions/7363777/arrow-keys-dont-work-after-programmatically-setting-listview-selecteditem/7364949#7364949
+                    this.listViewTable.ItemContainerGenerator.StatusChanged += icg_StatusChanged;
+                    this.listViewTable.SelectedItem = listViewTable.Items[i];
+                    current = listViewTable.Items[i] as Class线路里程;
+
                 }
                 else
                 {
