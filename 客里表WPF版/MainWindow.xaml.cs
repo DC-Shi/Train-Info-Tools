@@ -22,17 +22,21 @@ namespace 客里表WPF版
     /// </summary>
     public partial class MainWindow : Window
     {
+        /// <summary>
+        /// 数据库的ViewModel
+        /// </summary>
         ViewModel vm = null;
+
+        /// <summary>
+        /// 构造函数，初始化可视化组件，初始化数据库ViewModel
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
             vm = new ViewModel();
             this.DataContext = vm;
             textBlockStatus.Text += ("Database loaded.");
-
-
-            //listBox线路列表.ItemsSource = classDB.ListRouteName;
-            //listBox车站列表.ItemsSource = classDB.ListStationName;
+            
 
             FocusF3(this, null);
         }
@@ -48,17 +52,10 @@ namespace 客里表WPF版
             textBox输入框.Focus();
             textBox输入框.SelectAll();
         }
-
-        //ClassDatabase classDB = null;
+        
 
         private void textBox输入框_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //var inputText = textBox输入框.Text.ToUpper();
-            //var resultStation = classDB.ListStationName.Where(x => x.拼音码.Contains(inputText) || x.电报码.Contains(inputText) || x.站名.Contains(inputText) || x.车站代码.Contains(inputText));
-
-
-            //listBox车站列表.ItemsSource = resultStation.Take(100);
-
             /// http://stackoverflow.com/questions/2008481/how-do-i-filter-listview-in-wpf
             /// 
             var view = CollectionViewSource.GetDefaultView(listBox车站列表.ItemsSource);
@@ -77,29 +74,8 @@ namespace 客里表WPF版
             };
 
             view.Refresh();
-
-            //var resultRoute = classDB.ListRouteName.Where(x => x.线路名.Contains(inputText));
-            //if (resultRoute.Count() > 0)
-            //{
-            //    listBox线路列表.ItemsSource = resultRoute;
-            //}
         }
-
-        //private void TextBlock_MouseDown(object sender, MouseButtonEventArgs e)
-        //{
-        //    if (e.ClickCount == 2)
-        //    {
-        //        var selectedRoute = classDB.ListRouteMileage.Where(x => x.线路名.Equals((listBox线路列表.SelectedItem as Class线路名).线路名));
-        //        if (selectedRoute.Count() > 0)
-        //        {
-        //            listViewTable.ItemsSource = selectedRoute.ToArray();
-        //        }
-        //        else
-        //        {
-        //            Console.WriteLine("目标为空，找不到线路名{0}", (listBox线路列表.SelectedItem as Class线路名).线路名);
-        //        }
-        //    }
-        //}
+        
 
         private void textBox输入框_KeyDown(object sender, KeyEventArgs e)
         {

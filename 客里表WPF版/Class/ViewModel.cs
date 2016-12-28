@@ -11,10 +11,19 @@ namespace 客里表WPF版.Class
     {
         #region Properties
 
+        /// <summary>
+        /// 后端数据库
+        /// </summary>
         ClassDatabase classDB { get; }
 
+        /// <summary>
+        /// 所有站名，每项包括站名及附加信息
+        /// </summary>
         public List<Class站名加> 所有站名 { get; set; } = new List<Class站名加>();
 
+        /// <summary>
+        /// 所有线路，只读列表
+        /// </summary>
         public List<Class线路名> 所有线路
         {
             get
@@ -23,6 +32,9 @@ namespace 客里表WPF版.Class
             }
         }
 
+        /// <summary>
+        /// 所有线路里程，只读列表
+        /// </summary>
         public List<Class线路里程> 所有线路里程
         {
             get
@@ -33,6 +45,9 @@ namespace 客里表WPF版.Class
 
         #endregion
 
+        /// <summary>
+        /// 构造函数，初始化数据库，并给站名添加附加信息
+        /// </summary>
         public ViewModel()
         {
             classDB = new ClassDatabase("data.mdb");

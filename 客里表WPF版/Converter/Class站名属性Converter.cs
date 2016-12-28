@@ -6,12 +6,13 @@ using System.Text;
 using System.Windows.Data;
 using 客里表Library;
 using 客里表Library.Database;
+using 客里表WPF版.Class;
 
 namespace 客里表WPF版.Converter
 {
     class Class站名属性Converter : IValueConverter
     {
-        static ClassDatabase classDB = new ClassDatabase("data.mdb");
+        static ViewModel classVM = new ViewModel();
         /// <summary>
         /// 把路名转换为本站其他属性的Text
         /// </summary>
@@ -22,7 +23,7 @@ namespace 客里表WPF版.Converter
         public object Convert(object stationName, Type typeTarget,
                               object param, CultureInfo culture)
         {
-            var findStation = classDB.ListStationName.Where(x => x.站名.Equals((stationName as Class线路里程)?.站名));
+            var findStation = classVM.所有站名.Where(x => x.站名.Equals((stationName as Class线路里程)?.站名));
             if (findStation.Count() > 0)
             {
                 /// Station found, show the first one.
@@ -72,8 +73,7 @@ namespace 客里表WPF版.Converter
                     case "结算站":
                         return first.是否接算站 ? "是" : string.Empty;
                     case "接续线路":
-                        var stationRoutes = classDB.ListRouteMileage.Where(x => x.站名 == first.站名);
-                        var count = stationRoutes.Count();
+                        var count = first.所属路线.Count();
                         return count > 1 ? count.ToString() : string.Empty;
                 }
                 
