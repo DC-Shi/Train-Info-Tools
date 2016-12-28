@@ -69,6 +69,12 @@ namespace 客里表WPF版.Converter
 
                     case "限制":
                         return first.营业办理限制;
+                    case "结算站":
+                        return first.是否接算站 ? "是" : string.Empty;
+                    case "接续线路":
+                        var stationRoutes = classDB.ListRouteMileage.Where(x => x.站名 == first.站名);
+                        var count = stationRoutes.Count();
+                        return count > 1 ? count.ToString() : string.Empty;
                 }
                 
             }
