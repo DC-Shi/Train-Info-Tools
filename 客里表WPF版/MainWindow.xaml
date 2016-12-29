@@ -56,7 +56,10 @@
                      ItemsSource="{Binding Path=所有线路}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding 线路名}"/>
+                        <TextBlock>
+                            <Run Text="{Binding 线路名}"/>
+                            <Run Text="{Binding 线路名, Converter={StaticResource Class站名属性Converter}, ConverterParameter=是否为高速线}"/>
+                        </TextBlock>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>

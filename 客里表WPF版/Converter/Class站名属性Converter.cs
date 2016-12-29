@@ -23,6 +23,31 @@ namespace 客里表WPF版.Converter
         public object Convert(object stationName, Type typeTarget,
                               object param, CultureInfo culture)
         {
+            switch (param?.ToString())
+            {
+                case "是否为高速线":
+                    {
+                        bool ret = true;
+                        /// 找到当前线路所有车站
+                        var 当前路线上的所有车站 = classVM.所有线路里程.Where(x => x.线路名.Equals(stationName));
+                        if (当前路线上的所有车站.Count() > 0)
+                        {
+                            /// 逐个检查车站，看是否允许高速通过
+                            foreach (var 车站 in 当前路线上的所有车站)
+                            {
+                                var first = classVM.所有站名.Where(x => x.站名.Equals(车站.站名)).First();
+                                if (!first.是否允许办理G车)
+                                {
+                                    ret = false;
+                                    break;
+                                }
+                            }
+                        }
+                        return ret ? "【高】" : string.Empty;
+                    }
+            }
+
+
             var findStation = classVM.所有站名.Where(x => x.站名.Equals((stationName as Class线路里程)?.站名));
             if (findStation.Count() > 0)
             {
