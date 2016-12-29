@@ -89,7 +89,12 @@ namespace 客里表WPF版.Class
                     Class站名加 previous站 = null;
                     while (previousIdx >= 0)
                     {
-                        previous站 = 所有站名.Where(x => x.站名 == cur线路里程[previousIdx].站名).First();
+                        /// 白鹿塘站不在所有站名当中
+                        /// 那个客里表程序是显示了空白
+                        var possibleprevious站 = 所有站名.Where(x => x.站名 == cur线路里程[previousIdx].站名);
+                        if (possibleprevious站.Count() == 0) break;
+                        
+                        previous站 = possibleprevious站.First();
                         /// 如果当前车站已经是可以办理G车的，那么就可以跳出来了
                         if (previous站.是否允许办理G车)
                             break;
@@ -105,13 +110,20 @@ namespace 客里表WPF版.Class
                     /// 如果找到的站允许办理G车，或者previousIdx已经小于0了（说明到头了也均可办理）
                     /// 那么说明previous到cur这一段均可办理G车，因此均包括进来
                     if (
-                         previousIdx < 0 || previous站.是否允许办理G车
+                        previous站 != null &&
+                        (previousIdx < 0 || previous站.是否允许办理G车)
                         )
                     {
                         /// 那么从previous到cur之前的车站均可视为允许G车的
                         for (int i = previousIdx + 1; i < curIdx; i++)
                         {
                             previous站 = 所有站名.Where(x => x.站名 == cur线路里程[i].站名).First();
+                            if (!previous站.是否允许办理G车)
+                            {
+                                /// 我们将一个站点的属性改变了，因此其他站点也有可能受影响，因此加入到队列当中
+                                /// 这样做就能让霸徐线变为允许G通过的线路了。
+                                queue待查站名.Enqueue(previous站);
+                            }
                             previous站.是否允许办理G车 = true;
                         }
                     }
@@ -121,7 +133,12 @@ namespace 客里表WPF版.Class
                     Class站名加 next站 = null;
                     while (nextIdx < cur线路里程.Count)
                     {
-                        next站 = 所有站名.Where(x => x.站名 == cur线路里程[nextIdx].站名).First();
+                        /// 白鹿塘站不在所有站名当中
+                        /// 那个客里表程序是显示了空白
+                        var possiblenext站 = 所有站名.Where(x => x.站名 == cur线路里程[nextIdx].站名);
+                        if (possiblenext站.Count() == 0) break;
+
+                        next站 = possiblenext站.First();
                         /// 如果当前车站已经是可以办理G车的，那么就可以跳出来了
                         if (next站.是否允许办理G车)
                             break;
@@ -137,13 +154,20 @@ namespace 客里表WPF版.Class
                     /// 如果找到的站允许办理G车，或者previousIdx已经小于0了（说明到头了也均可办理）
                     /// 那么说明previous到cur这一段均可办理G车，因此均包括进来
                     if (
-                         nextIdx >= cur线路里程.Count || next站.是否允许办理G车
+                        next站 != null &&
+                        (nextIdx >= cur线路里程.Count || next站.是否允许办理G车)
                         )
                     {
                         /// 那么从previous到cur之前的车站均可视为允许G车的
                         for (int i = curIdx + 1; i < nextIdx; i++)
                         {
                             next站 = 所有站名.Where(x => x.站名 == cur线路里程[i].站名).First();
+                            if (!next站.是否允许办理G车)
+                            {
+                                /// 我们将一个站点的属性改变了，因此其他站点也有可能受影响，因此加入到队列当中
+                                /// 这样做就能让霸徐线变为允许G通过的线路了。
+                                queue待查站名.Enqueue(next站);
+                            }
                             next站.是否允许办理G车 = true;
                         }
                     }
