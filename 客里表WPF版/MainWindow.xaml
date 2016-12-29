@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:客里表WPF版"
         xmlns:Converter="clr-namespace:客里表WPF版.Converter" x:Class="客里表WPF版.MainWindow"
         mc:Ignorable="d"
-        Title="客里表WPF版" Height="350" Width="525" FontWeight="Bold" FontSize="21.333" FontFamily="SimHei" WindowState="Maximized">
+        Title="客里表WPF版" Height="450" Width="625" FontWeight="Bold" FontSize="21" FontFamily="SimHei" WindowState="Maximized">
     <Window.Resources>
         <Converter:Class站名属性Converter x:Key="Class站名属性Converter"/>
         <RoutedUICommand x:Key="cmdFocusF3"/>
@@ -52,7 +52,7 @@
 
             </TextBox>
 
-            <ListBox x:Name="listBox线路列表" KeyDown="listBox线路列表_KeyDown"  VerticalAlignment="Bottom" DockPanel.Dock="Bottom" MinHeight="30" MaxHeight="100"
+            <ListBox x:Name="listBox线路列表" KeyDown="listBox线路列表_KeyDown"  VerticalAlignment="Bottom" DockPanel.Dock="Bottom" MinHeight="30" MaxHeight="150"
                      ItemsSource="{Binding Path=所有线路}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
