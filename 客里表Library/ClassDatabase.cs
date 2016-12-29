@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace 客里表Library
 {
@@ -158,6 +159,50 @@ namespace 客里表Library
             {
                 conn?.Close();
             }
+
+
+            /// 查找剩余没有在线路列表当中的线路
+            /// 
+            foreach(var stationMile in ListRouteMileage)
+            {
+                if (ListRouteName.FindIndex(route => route.线路名 == stationMile.线路名) < 0)
+                {
+                    /// 先查找该站点所在线路的所有站点
+                    /// 
+                    var allStations = ListRouteMileage.Where(lrm => lrm.线路名 == stationMile.线路名);
+
+                    /// 如果当前线路恰好两站，那么一个为头，一个为尾；否则不添加该线路
+                    if (allStations.Count() == 2)
+                    {
+                        var sortedStations = allStations.ToList();
+                        sortedStations.Sort((x, y) => (int)(x.距起始站里程 - y.距起始站里程));
+                        /// 有两条线路没有在所有线路当中出现，因此手动添加
+                        /// 鉴于最大序号246，用248作为最大序号
+                        /// 
+                        Class线路名 新线路 = new Class线路名();
+                        新线路.备注 = "该线路为程序自动补充";
+                        新线路.序号 = "248";
+                        新线路.是否窄轨 = false;
+                        新线路.线路名 = stationMile.线路名;
+                        新线路.终止端站名 = sortedStations[1].站名;
+                        新线路.起始端站名 = sortedStations[0].站名;
+                        新线路.里程 = sortedStations[1].距起始站里程 - sortedStations[0].距起始站里程;
+
+                        ListRouteName.Add(新线路);
+                    }
+                }
+            }
+
+            /// 查找线路列表当中哪些线路没有车站
+            /// 只有郑荥线是没有在任何车站当中出现过的
+            //foreach (var route in ListRouteName)
+            //{
+            //    if (ListRouteMileage.FindIndex(x => x.线路名 == route.线路名) < 0)
+            //    {
+            //        Console.WriteLine(route.线路名);
+            //    }
+            //}
+
         }
 
         #endregion
