@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -28,17 +29,35 @@ namespace 客里表WPF版
         ViewModel客里表数据 vm = null;
 
         /// <summary>
+        /// BackgroundWorker, 因为修改了ViewModel，因此加载数据变慢了，用后台加载
+        /// </summary>
+        BackgroundWorker bwLoadData = new BackgroundWorker();
+
+        /// <summary>
         /// 构造函数，初始化可视化组件，初始化数据库ViewModel
         /// </summary>
         public MainWindow()
         {
             InitializeComponent();
-            vm = new ViewModel客里表数据();
+
+            textBlockStatus.Text = ("Database is loading.");
+
+            bwLoadData.DoWork += BwLoadData_DoWork;
+            bwLoadData.RunWorkerCompleted += BwLoadData_RunWorkerCompleted;
+            bwLoadData.RunWorkerAsync();
+        }
+
+        private void BwLoadData_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
             this.DataContext = vm;
-            textBlockStatus.Text += ("Database loaded.");
-            
+            textBlockStatus.Text = ("Database loaded.");
 
             FocusF3(this, null);
+        }
+
+        private void BwLoadData_DoWork(object sender, DoWorkEventArgs e)
+        {
+            vm = new ViewModel客里表数据();
         }
 
         /// <summary>
