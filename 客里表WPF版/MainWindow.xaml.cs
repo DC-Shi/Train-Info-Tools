@@ -21,7 +21,7 @@ namespace 客里表WPF版
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
         /// <summary>
         /// 数据库的ViewModel
@@ -193,8 +193,7 @@ namespace 客里表WPF版
                     /// http://stackoverflow.com/questions/7363777/arrow-keys-dont-work-after-programmatically-setting-listview-selecteditem/7364949#7364949
                     this.listViewTable.ItemContainerGenerator.StatusChanged += icg_StatusChanged;
                     this.listViewTable.SelectedItem = listViewTable.Items[i];
-                    current = listViewTable.Items[i] as Class线路里程;
-
+                    current线路里程 = listViewTable.SelectedItem as Class线路里程;
                 }
                 else
                 {
@@ -202,8 +201,38 @@ namespace 客里表WPF版
                 }
             }
         }
+        
+        #region INotifyPropertyChanged implementation.
 
-        Class线路里程 current;
+        public event PropertyChangedEventHandler PropertyChanged;
+        // This method is called by the Set accessor of each property.
+        // The CallerMemberName attribute that is applied to the optional propertyName
+        // parameter causes the property name of the caller to be substituted as an argument.
+        private void NotifyPropertyChanged(String propertyName = "")
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        #endregion
+
+        /// <summary>
+        /// 利用DependencyProperty来实现DataBinding
+        /// http://stackoverflow.com/questions/13325617/i-cant-data-bind-to-a-local-variable-in-wpf-xaml
+        /// </summary>
+        public Class线路里程 current线路里程
+        {
+            get { return (Class线路里程)GetValue(current线路里程Property); }
+            set { SetValue(current线路里程Property, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for myText.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty current线路里程Property =
+            DependencyProperty.Register("current线路里程", typeof(Class线路里程), typeof(MainWindow), new PropertyMetadata(null));
+
+
         /// <summary>
         /// http://stackoverflow.com/questions/7363777/arrow-keys-dont-work-after-programmatically-setting-listview-selecteditem/7364949#7364949
         /// </summary>
@@ -218,10 +247,9 @@ namespace 客里表WPF版
                     -= icg_StatusChanged;
                 Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Input,
                                        new Action(() => {
-                                           var uielt = (UIElement)this.listViewTable.ItemContainerGenerator.ContainerFromItem(current);
+                                           var uielt = (UIElement)this.listViewTable.ItemContainerGenerator.ContainerFromItem(current线路里程);
                                            uielt.Focus();
                                        }));
-
             }
         }
 

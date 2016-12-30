@@ -4,12 +4,32 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:客里表WPF版"
-        xmlns:Converter="clr-namespace:客里表WPF版.Converter" x:Class="客里表WPF版.MainWindow"
+        xmlns:Converter="clr-namespace:客里表WPF版.Converter" x:Name="window客里表" x:Class="客里表WPF版.MainWindow"
         mc:Ignorable="d"
         Title="客里表WPF版" Height="450" Width="625" FontWeight="Bold" FontSize="21" FontFamily="SimHei" WindowState="Maximized">
     <Window.Resources>
         <Converter:Class站名属性Converter x:Key="Class站名属性Converter"/>
         <RoutedUICommand x:Key="cmdFocusF3"/>
+        <Converter:Class计算站间距Converter x:Key="Class计算站间距Converter"/>
+        <!-- http://stackoverflow.com/a/24476824 -->
+        <Style TargetType="Control" x:Key="styleBackgroud">
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="Control.GotFocus">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation Storyboard.TargetProperty="Background.Color" To="LightSalmon" Duration="0:0:0.250"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="Control.LostFocus">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation Storyboard.TargetProperty="Background.Color" To="{x:Static SystemColors.WindowColor}" Duration="0:0:0.250"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
     <!-- http://stackoverflow.com/questions/3386206/wpf-assign-f-keys-to-buttons -->
     <Window.CommandBindings>
@@ -53,7 +73,7 @@
             </TextBox>
 
             <ListBox x:Name="listBox线路列表" KeyDown="listBox线路列表_KeyDown"  VerticalAlignment="Bottom" DockPanel.Dock="Bottom" MinHeight="30" MaxHeight="150"
-                     ItemsSource="{Binding Path=所有线路}">
+                     ItemsSource="{Binding Path=所有线路}" Style="{DynamicResource styleBackgroud}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock>
@@ -62,75 +82,13 @@
                         </TextBlock>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
-                <ListBox.Style>
-                    <!-- http://stackoverflow.com/a/24476824 -->
-                    <Style>
-                        <Style.Triggers>
-                            <EventTrigger RoutedEvent="Control.GotFocus">
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <ColorAnimation Storyboard.TargetProperty="Background.Color" To="{x:Static SystemColors.ControlColor}" Duration="0:0:0.250"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                            <EventTrigger RoutedEvent="Control.LostFocus">
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <ColorAnimation Storyboard.TargetProperty="Background.Color" To="{x:Static SystemColors.WindowColor}" Duration="0:0:0.250"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </ListBox.Style>
+
             </ListBox>
             <ListBox x:Name="listBox车站列表" KeyDown="listBox车站列表_KeyDown" Margin="0,10"
-                     ItemsSource="{Binding Path=所有站名}">
-                <ListBox.Style>
-                    <!-- http://stackoverflow.com/a/24476824 -->
-                    <Style>
-                        <Style.Triggers>
-                            <EventTrigger RoutedEvent="Control.GotFocus">
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <ColorAnimation Storyboard.TargetProperty="Background.Color" To="{x:Static SystemColors.ControlColor}" Duration="0:0:0.250"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                            <EventTrigger RoutedEvent="Control.LostFocus">
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <ColorAnimation Storyboard.TargetProperty="Background.Color" To="{x:Static SystemColors.WindowColor}" Duration="0:0:0.250"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </ListBox.Style>
+                     ItemsSource="{Binding Path=所有站名}" Style="{DynamicResource styleBackgroud}">
             </ListBox>
         </DockPanel>
-        <ListView x:Name="listViewTable" Margin="10,47,10,10" Grid.Column="1" KeyDown="listViewTable_KeyDown">
-            <ListView.Style>
-                <!-- http://stackoverflow.com/a/24476824 -->
-                <Style>
-                    <Style.Triggers>
-                        <EventTrigger RoutedEvent="Control.GotFocus">
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <ColorAnimation Storyboard.TargetProperty="Background.Color" To="{x:Static SystemColors.ControlColor}" Duration="0:0:0.250"/>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </EventTrigger>
-                        <EventTrigger RoutedEvent="Control.LostFocus">
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <ColorAnimation Storyboard.TargetProperty="Background.Color" To="{x:Static SystemColors.WindowColor}" Duration="0:0:0.250"/>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </EventTrigger>
-                    </Style.Triggers>
-                </Style>
-            </ListView.Style>
+        <ListView x:Name="listViewTable" Margin="10,47,10,10" Grid.Column="1" KeyDown="listViewTable_KeyDown" Style="{DynamicResource styleBackgroud}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="限制">
@@ -152,20 +110,27 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="距起始站里程">
+                    <GridViewColumn Header="里程">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding 距起始站里程}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn>
+                    <GridViewColumn Width="80">
                         <GridViewColumn.Header>
-                            <TextBlock Text="{Binding SelectedItem.站名, ElementName=listBox车站列表, StringFormat={}自{0}}"/>
+                            <TextBlock Text="{Binding current线路里程.站名, ElementName=window客里表, StringFormat={}自{0}}"/>
                         </GridViewColumn.Header>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding 站名}"/>
+                                <TextBlock>
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource Class计算站间距Converter}">
+                                            <Binding Path="."/>
+                                            <Binding Path="current线路里程" ElementName="window客里表"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -197,7 +162,7 @@
         <StatusBar Grid.Row="1" Grid.ColumnSpan="2">
             <TextBlock x:Name="textBlockStatus" TextWrapping="Wrap" Text="Status"/>
         </StatusBar>
-        <TextBox x:Name="textBox线路名称" Height="27" TextWrapping="Wrap" VerticalAlignment="Top" Margin="10,10,0,0" Grid.Column="1" HorizontalAlignment="Left" Width="171">
+        <TextBox x:Name="textBox线路名称" Height="27" TextWrapping="Wrap" VerticalAlignment="Top" Margin="10,10,0,0" Grid.Column="1" HorizontalAlignment="Left" Width="223">
             <!-- http://www.cnblogs.com/tsunami/archive/2011/09/16/2179170.html -->
             <TextBox.Resources>
                 <VisualBrush x:Key="HelpBrush" TileMode="None" Opacity="0.3" Stretch="None" AlignmentX="Left">
