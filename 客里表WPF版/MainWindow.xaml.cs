@@ -233,7 +233,24 @@ namespace 客里表WPF版
                 if (selectedClass线路里程 != null)
                 {
                     textBox输入框.Text = selectedClass线路里程.站名;
-                    FocusF3(sender, e);
+
+                    /// 仅显示当前车站
+                    var view = CollectionViewSource.GetDefaultView(listBox车站列表.ItemsSource);
+
+                    /// view might be null if no item presented.
+                    if (view == null) return;
+
+                    view.Filter = x =>
+                    {
+                        var czm = x as Class站名;
+                        return czm.站名 == selectedClass线路里程.站名;
+                    };
+
+                    view.Refresh();
+
+                    listBox车站列表.SelectedIndex = 0;
+                    /// 然后模拟车站列表按回车
+                    listBox车站列表_KeyDown(sender, e);
                 }
             }
         }
