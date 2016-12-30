@@ -45,6 +45,10 @@ namespace 客里表WPF版.Converter
                         }
                         return ret ? "【高】" : string.Empty;
                     }
+
+                case "是否接算站Foreground":
+                    var 站信息 = classVM.所有站名.Where(sta => sta.站名.Equals(stationName));
+                    return 站信息.First().是否接算站;
             }
 
 
