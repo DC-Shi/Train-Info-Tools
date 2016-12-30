@@ -101,7 +101,9 @@ namespace 客里表WPF版.Class
                         /// 如果当前车站是符合那三类条件的，那么继续往前或往后
                         if (previous站.营业办理限制.Contains("×") ||
                             previous站.营业办理限制.Contains("△") ||
-                            previous站.所属路线.Count() > 1)
+                            previous站.所属路线.Count() > 1 &&
+                            !previous站.营业办理限制.Contains("※")
+                            )
                             previousIdx--;
                         /// 当前车站不是上述3类，没必要继续往前搜索
                         else
@@ -143,9 +145,12 @@ namespace 客里表WPF版.Class
                         if (next站.是否允许办理G车)
                             break;
                         /// 如果当前车站是符合那三类条件的，那么继续往前或往后
+                        /// bug fix: ※表示乘降所，客专里边暂认为不含此类站点
                         if (next站.营业办理限制.Contains("×") ||
                             next站.营业办理限制.Contains("△") ||
-                            next站.所属路线.Count() > 1)
+                            next站.所属路线.Count() > 1 &&
+                            !next站.营业办理限制.Contains("※")
+                            )
                             nextIdx++;
                         /// 当前车站不是上述3类，没必要继续往前搜索
                         else
