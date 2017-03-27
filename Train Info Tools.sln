@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parse12306 CSharp", "Parse12306 CSharp\Parse12306 CSharp.csproj", "{8BB3CD34-307C-45A5-9BC9-E7689B4DCFDE}"
 EndProject
@@ -31,8 +31,8 @@ Global
 		{8BB3CD34-307C-45A5-9BC9-E7689B4DCFDE}.Release|x86.Build.0 = Release|Any CPU
 		{3EE3CDE4-BA42-4E49-A0C3-B60017EC24E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3EE3CDE4-BA42-4E49-A0C3-B60017EC24E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3EE3CDE4-BA42-4E49-A0C3-B60017EC24E4}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{3EE3CDE4-BA42-4E49-A0C3-B60017EC24E4}.Debug|x86.Build.0 = Debug|Any CPU
+		{3EE3CDE4-BA42-4E49-A0C3-B60017EC24E4}.Debug|x86.ActiveCfg = Debug|x86
+		{3EE3CDE4-BA42-4E49-A0C3-B60017EC24E4}.Debug|x86.Build.0 = Debug|x86
 		{3EE3CDE4-BA42-4E49-A0C3-B60017EC24E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3EE3CDE4-BA42-4E49-A0C3-B60017EC24E4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3EE3CDE4-BA42-4E49-A0C3-B60017EC24E4}.Release|x86.ActiveCfg = Release|Any CPU

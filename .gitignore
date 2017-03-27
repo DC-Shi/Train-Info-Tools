@@ -1,0 +1,15 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/packages/Newtonsoft.Json.8.0.2
+/Routing Info Viewer/bin
+/Routing Info Viewer/obj
+/Parse12306 CSharp/bin
+/Parse12306 CSharp/obj
+/客里表Library/bin
+/客里表Library/obj
+/客里表WPF版/bin
+/客里表WPF版/obj
+/Unicode GB2312 Filename Converter/obj
+/.vs/Train Info Tools/v14/.suo
